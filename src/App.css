@@ -1,0 +1,18 @@
+.layout-header {
+    background-color: rgba(255, 255, 255, 0.7);
+    height: 110px;
+}
+
+.app {
+    background-color: #38b6e6;
+}
+
+.content {
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 500px;
+}
+
+.center-aligned {
+    width: 100%;
+    justify-content: center;
+}

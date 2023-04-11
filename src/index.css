@@ -1,0 +1,10 @@
+@import "../node_modules/antd/dist/reset.css";
+
+body {
+	background-color: #DDDDDD;
+	color: black;
+	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+	font-size: 17px;
+	font-weight: 300;
+	overflow-x: hidden;
+}
