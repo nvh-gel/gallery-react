@@ -1,15 +1,13 @@
 .layout-header {
     background-color: rgba(255, 255, 255, 0.7);
-    height: 110px;
-}
-
-.app {
-    background-color: #38b6e6;
+    height: 80px;
 }
 
 .content {
     background-color: rgba(255, 255, 255, 0.3);
-    height: 500px;
+    min-height: 280px;
+    padding: 24px 200px;
+    border: #0b0b0b;
 }
 
 .center-aligned {

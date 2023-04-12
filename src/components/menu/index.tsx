@@ -7,15 +7,19 @@ import {NavLink, useLocation} from "react-router-dom";
 const menuItems = [{
     key: '/',
     label: <NavLink to="/">Home</NavLink>,
+    color: '#74ccee',
 }, {
     key: '/gallery',
     label: <NavLink to="/gallery">Gallery</NavLink>,
+    color: '#ed544c',
 }, {
     key: '/about',
     label: <NavLink to="/about">About Us</NavLink>,
+    color: '#eaa319',
 }, {
     key: '/contact',
     label: <NavLink to="/contact">Contact</NavLink>,
+    color: '#16b5a3',
 },];
 
 function PageMenu() {
@@ -23,8 +27,7 @@ function PageMenu() {
     const location = useLocation();
 
     return (
-        <Row justify="space-between" className="nav-bar" align="middle">
-            <Col span={4}/>
+        <Row justify="space-around" className="nav-bar" align="bottom">
             <Col span={8}>
                 <NavLink to="/">
                     <Space direction="horizontal">
@@ -33,12 +36,13 @@ function PageMenu() {
                     </Space>
                 </NavLink>
             </Col>
-            <Col span={4}/>
             <Col span={8}>
-                <Menu className="menu nav-bar"
-                      mode="horizontal"
-                      items={menuItems}
-                      selectedKeys={[location.pathname]}
+                <Menu
+                    className="nav-bar"
+                    mode="horizontal"
+                    items={menuItems}
+                    selectedKeys={[location.pathname]}
+                    style={{float: "right"}}
                 />
             </Col>
         </Row>
