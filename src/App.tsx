@@ -9,47 +9,13 @@ import HomePage from "./pages/home";
 import GalleryPage from "./pages/gallery";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/contact";
-
-const themeBlue = {
-    token: {
-        colorBgBase: '#74ccee',
-    }
-}
-const themeRed = {
-    token: {
-        colorBgBase: '#ed544c',
-    }
-}
-const themeYellow = {
-    token: {
-        colorBgBase: '#eaa319',
-    }
-}
-const themeGreen = {
-    token: {
-        colorBgBase: '#16b5a3',
-    }
-}
+import defineTheme from "./Theme";
+import ModelPage from "./pages/model";
 
 function Page() {
 
     const location = useLocation();
-    const [currentTheme, setCurrentTheme] = useState(themeBlue);
-
-    function defineTheme(pathname: string) {
-        switch (pathname) {
-            case "/":
-                return themeBlue;
-            case "/gallery":
-                return themeRed;
-            case "/about":
-                return themeYellow;
-            case "/contact":
-                return themeGreen;
-            default:
-                return themeBlue;
-        }
-    }
+    const [currentTheme, setCurrentTheme] = useState(defineTheme("/"));
 
     useEffect(() => {
         setCurrentTheme(defineTheme(location.pathname));
@@ -65,6 +31,7 @@ function Page() {
                     <Content className="content">
                         <Routes>
                             <Route path="/" key="home" element={<HomePage/>}/>
+                            <Route path="/model" key="model" element={<ModelPage/>}/>
                             <Route path="/gallery" key="gallery" element={<GalleryPage/>}/>
                             <Route path="/about" key="about" element={<AboutPage/>}/>
                             <Route path="/contact" key="contact" element={<ContactPage/>}/>
@@ -77,8 +44,7 @@ function Page() {
                 </Layout>
             </ConfigProvider>
         </div>
-    )
-        ;
+    );
 }
 
 const App: React.FC = () => (
