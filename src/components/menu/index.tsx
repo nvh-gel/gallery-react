@@ -57,7 +57,7 @@ function PageMenu() {
                 <NavLink to="/">
                     <Space direction="horizontal">
                         <FontAwesomeIcon icon="gears" size="2xl"/>
-                        <div className="logo">MULTICOLOR</div>
+                        <div className="logo">GALLERY</div>
                     </Space>
                 </NavLink>
             </Col>
