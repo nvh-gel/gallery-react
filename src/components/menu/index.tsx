@@ -3,11 +3,14 @@ import {Col, Menu, Row, Space, Typography} from "antd";
 import './menu.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useLocation} from "react-router-dom";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 
-function PageMenu() {
+function PageMenu(props: any) {
 
     const location = useLocation().pathname;
     const [currentSelect, setCurrentSelect] = useState(location);
+
+    const {currentUser} = props;
 
     const menuColors = {
         "/": 'rgba(116,204,238,0.7)',
@@ -40,7 +43,13 @@ function PageMenu() {
         style: defineMenuItemStyle("/contact"),
     }, {
         key: '/login',
-        label: <Typography.Link></Typography.Link>
+        label:
+            <Typography.Link>
+                {currentUser !== null
+                    ? <UserOutlined style={{fontSize: 24}}/>
+                    : <LockOutlined style={{fontSize: 24}}/>
+                }
+            </Typography.Link>
     }];
 
     function defineMenuItemStyle(key: ObjectKey): {} {

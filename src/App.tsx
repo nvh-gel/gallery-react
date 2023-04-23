@@ -12,11 +12,14 @@ import ContactPage from "./pages/contact";
 import defineTheme from "./Theme";
 import ModelPage from "./pages/model";
 import LoginPage from "./pages/login";
+import User from "./interface/User";
 
 function Page() {
 
     const location = useLocation();
-    const [currentTheme, setCurrentTheme] = useState(defineTheme("/"));
+    const [currentTheme, setCurrentTheme]
+        = useState(defineTheme("/"));
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
 
     useEffect(() => {
         setCurrentTheme(defineTheme(location.pathname));
@@ -27,16 +30,28 @@ function Page() {
             <ConfigProvider theme={currentTheme}>
                 <Layout className="app layout">
                     <Header className="layout-header">
-                        <PageMenu/>
+                        <PageMenu currentUser={currentUser} setCurrentUser={setCurrentUser}/>
                     </Header>
                     <Content className="content">
                         <Routes>
-                            <Route path="/" key="home" element={<HomePage/>}/>
-                            <Route path="/model" key="model" element={<ModelPage/>}/>
-                            <Route path="/album" key="album" element={<AlbumPage/>}/>
-                            <Route path="/about" key="about" element={<AboutPage/>}/>
-                            <Route path="/contact" key="contact" element={<ContactPage/>}/>
-                            <Route path="/login" key="login" element={<LoginPage/>}/>
+                            <Route path="/" key="home"
+                                   element={<HomePage/>}
+                            />
+                            <Route path="/model" key="model"
+                                   element={<ModelPage/>}
+                            />
+                            <Route path="/album" key="album"
+                                   element={<AlbumPage/>}
+                            />
+                            <Route path="/about" key="about"
+                                   element={<AboutPage/>}
+                            />
+                            <Route path="/contact" key="contact"
+                                   element={<ContactPage/>}
+                            />
+                            <Route path="/login" key="login"
+                                   element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>}
+                            />
                         </Routes>
                     </Content>
                     <Footer>
