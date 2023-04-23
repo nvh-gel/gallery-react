@@ -14,3 +14,19 @@
     width: 100%;
     justify-content: center;
 }
+
+.ant-input {
+    background-color: snow;
+}
+
+.ant-checkbox-inner {
+    /*background-color: snow !important;*/
+    /*color: red !important;*/
+}
+
+.form {
+    background-color: whitesmoke;
+    border: #0b0b0b;
+    border-radius: 10px;
+    padding: 24px 24px 1px 24px;
+}

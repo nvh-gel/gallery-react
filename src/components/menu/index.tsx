@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col, Menu, Row, Space} from "antd";
+import {Col, Menu, Row, Space, Typography} from "antd";
 import './menu.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useLocation} from "react-router-dom";
@@ -12,7 +12,7 @@ function PageMenu() {
     const menuColors = {
         "/": 'rgba(116,204,238,0.7)',
         "/model": 'rgba(125,90,248,0.7)',
-        "/gallery": 'rgba(237,84,76,0.7)',
+        "/album": 'rgba(237,84,76,0.7)',
         "/about": 'rgba(234,163,25,0.7)',
         "/contact": 'rgba(22,181,163,0.7)',
     };
@@ -27,9 +27,9 @@ function PageMenu() {
         label: <NavLink to="/model">Model</NavLink>,
         style: defineMenuItemStyle("/model"),
     }, {
-        key: '/gallery',
-        label: <NavLink to="/gallery">Gallery</NavLink>,
-        style: defineMenuItemStyle("/gallery"),
+        key: '/album',
+        label: <NavLink to="/album">Album</NavLink>,
+        style: defineMenuItemStyle("/album"),
     }, {
         key: '/about',
         label: <NavLink to="/about">About Us</NavLink>,
@@ -38,7 +38,10 @@ function PageMenu() {
         key: '/contact',
         label: <NavLink to="/contact">Contact</NavLink>,
         style: defineMenuItemStyle("/contact"),
-    },];
+    }, {
+        key: '/login',
+        label: <Typography.Link></Typography.Link>
+    }];
 
     function defineMenuItemStyle(key: ObjectKey): {} {
         if (currentSelect === key) {

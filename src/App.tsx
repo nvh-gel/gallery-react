@@ -6,11 +6,12 @@ import {Content, Footer, Header} from "antd/es/layout/layout";
 import {HashRouter, Route, Routes, useLocation} from "react-router-dom";
 import PageFooter from "./components/footer";
 import HomePage from "./pages/home";
-import GalleryPage from "./pages/gallery";
+import AlbumPage from "./pages/album";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/contact";
 import defineTheme from "./Theme";
 import ModelPage from "./pages/model";
+import LoginPage from "./pages/login";
 
 function Page() {
 
@@ -32,9 +33,10 @@ function Page() {
                         <Routes>
                             <Route path="/" key="home" element={<HomePage/>}/>
                             <Route path="/model" key="model" element={<ModelPage/>}/>
-                            <Route path="/gallery" key="gallery" element={<GalleryPage/>}/>
+                            <Route path="/album" key="album" element={<AlbumPage/>}/>
                             <Route path="/about" key="about" element={<AboutPage/>}/>
                             <Route path="/contact" key="contact" element={<ContactPage/>}/>
+                            <Route path="/login" key="login" element={<LoginPage/>}/>
                         </Routes>
                     </Content>
                     <Footer>

@@ -30,7 +30,7 @@ function defineTheme(pathname: string) {
             return themeBlue;
         case "/model":
             return themePurple;
-        case "/gallery":
+        case "/album":
             return themeRed;
         case "/about":
             return themeYellow;
