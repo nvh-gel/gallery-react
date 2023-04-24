@@ -5,12 +5,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useLocation} from "react-router-dom";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {SyntheticEventData} from "react-dom/test-utils";
+import LoginModal from "../loginModal";
 
 function PageMenu(props: any) {
 
     const location = useLocation().pathname;
     const [currentSelect, setCurrentSelect] = useState(location);
-
+    const [modalLoginOpen, setModalLoginOpen] = useState(false);
     const {currentUser, setCurrentUser} = props;
 
     const menuColors = {
@@ -71,7 +72,7 @@ function PageMenu(props: any) {
 
     function handleClick(e: SyntheticEventData) {
         if (e.key === '/login') {
-            alert('test');
+            setModalLoginOpen(true);
         }
         if (e.key === '/logout') {
             return logout();
@@ -101,6 +102,11 @@ function PageMenu(props: any) {
                     onClick={handleClick}
                 />
             </Col>
+            <LoginModal
+                setCurrentUser={setCurrentUser}
+                modalLoginOpen={modalLoginOpen}
+                setModalLoginOpen={setModalLoginOpen}
+            />
         </Row>
     );
 }
