@@ -31,7 +31,6 @@ function Page() {
                 username: username,
                 token: token,
             }
-            console.log(loggedInUser);
             setCurrentUser(loggedInUser);
         }
     }, [location]);
