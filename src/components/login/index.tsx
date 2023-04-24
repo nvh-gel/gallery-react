@@ -11,6 +11,8 @@ function LoginForm(props: any) {
 
     function attemptLogin(data: any) {
         const url = URL_CONFIG.BASE + URL_CONFIG.AUTH + URL_CONFIG.LOGIN;
+        axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         axios.post(url, {
             username: data.username,
             password: data.password
@@ -23,6 +25,8 @@ function LoginForm(props: any) {
                 token: data.token,
             }
             setCurrentUser(user);
+            localStorage.setItem('username', user.username);
+            localStorage.setItem('token', user.token);
         });
     }
 
