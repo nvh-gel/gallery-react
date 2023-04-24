@@ -23,6 +23,17 @@ function Page() {
 
     useEffect(() => {
         setCurrentTheme(defineTheme(location.pathname));
+
+        const username = localStorage.getItem('username');
+        const token = localStorage.getItem('token');
+        if (username !== null && token !== null) {
+            const loggedInUser: User = {
+                username: username,
+                token: token,
+            }
+            console.log(loggedInUser);
+            setCurrentUser(loggedInUser);
+        }
     }, [location]);
 
     return (

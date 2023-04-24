@@ -1,6 +1,6 @@
 interface User {
-    username: string | null,
-    token: string | null,
+    username: string,
+    token: string,
 }
 
 export default User;
