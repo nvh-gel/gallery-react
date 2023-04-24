@@ -7,7 +7,7 @@ import User from "../../interface/User";
 
 function LoginForm(props: any) {
 
-    const {setCurrentUser} = props;
+    const {setCurrentUser, setModalLoginOpen} = props;
 
     function attemptLogin(data: any) {
         const url = URL_CONFIG.BASE + URL_CONFIG.AUTH + URL_CONFIG.LOGIN;
@@ -23,6 +23,9 @@ function LoginForm(props: any) {
                 token: data.token,
             }
             setCurrentUser(user);
+            localStorage.setItem('username', user.username);
+            localStorage.setItem('token', user.token);
+            setModalLoginOpen(false);
         });
     }
 
