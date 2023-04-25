@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "../login";
+import LoginForm from "../form";
 import {Modal} from "antd";
 
 function LoginModal(props: any) {

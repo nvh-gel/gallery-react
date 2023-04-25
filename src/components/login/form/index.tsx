@@ -1,9 +1,9 @@
 import React from "react";
 import {Button, Form, Input} from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
-import URL_CONFIG from "../../utils/URL_CONFIG";
+import URL_CONFIG from "../../../utils/URL_CONFIG";
 import axios from "axios";
-import User from "../../interface/User";
+import User from "../../../interface/User";
 import {Buffer} from "buffer";
 
 function LoginForm(props: any) {

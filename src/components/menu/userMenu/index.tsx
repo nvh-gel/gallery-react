@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useLocation} from "react-router-dom";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {SyntheticEventData} from "react-dom/test-utils";
-import LoginModal from "../loginModal";
+import LoginModal from "../../login/modal";
 
 function PageMenu(props: any) {
 
