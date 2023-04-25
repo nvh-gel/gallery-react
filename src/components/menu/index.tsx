@@ -46,8 +46,8 @@ function PageMenu(props: any) {
     }, {
         key: '/login',
         icon: currentUser === null
-            ? <LockOutlined style={{fontSize: 24}}/>
-            : <UserOutlined style={{fontSize: 24}}/>,
+            ? <LockOutlined style={{fontSize: 20}}/>
+            : <UserOutlined style={{fontSize: 20}}/>,
         children: currentUser === null ? null : [{
             label: 'Account',
             key: '/account',
