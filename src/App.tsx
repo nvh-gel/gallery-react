@@ -38,7 +38,7 @@ function App() {
             <ConfigProvider theme={currentTheme}>
                 {!isAdminPage()
                     ? <UserPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-                    : <AdminPage/>
+                    : <AdminPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>
                 }
             </ConfigProvider>
         </div>

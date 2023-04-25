@@ -8,24 +8,23 @@ import {Route, Routes} from "react-router-dom";
 import CrawlerPage from "../crawler";
 
 
-function AdminPage() {
+function AdminPage(props: any) {
 
     const {colorBgContainer} = theme.useToken().token;
+    const {currentUser, setCurrentUser} = props;
 
     return (
         <Layout>
             <Header className="header">
                 <div className="logo-admin"/>
-                <AdminMenu/>
+                <AdminMenu currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             </Header>
             <Layout>
                 <AdminSider/>
                 <Layout style={{padding: '0 24px 24px'}}>
-                    <Breadcrumb style={{margin: '16px 0'}}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
+                    <Breadcrumb style={{margin: '16px 0'}} items={
+                        [{title: "Home"}, {title: "Admin"}, {title: "Crawler"}]
+                    }/>
                     <Content
                         style={{
                             padding: 24,
