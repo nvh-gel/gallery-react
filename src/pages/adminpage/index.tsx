@@ -11,7 +11,7 @@ import CrawlerPage from "../crawler";
 function AdminPage(props: any) {
 
     const {colorBgContainer} = theme.useToken().token;
-    const {currentUser, setCurrentUser} = props;
+    const {currentUser, setCurrentUser, setSpinning} = props;
 
     return (
         <Layout>
@@ -34,7 +34,7 @@ function AdminPage(props: any) {
                         }}
                     >
                         <Routes>
-                            <Route key="crawler" path="/admin/crawler" element={<CrawlerPage/>}/>
+                            <Route key="crawler" path="/admin/crawler" element={<CrawlerPage setSpinning={setSpinning}/>}/>
                         </Routes>
                     </Content>
                     <Footer style={{textAlign: "center"}}>

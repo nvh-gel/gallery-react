@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {ConfigProvider} from "antd";
+import {ConfigProvider, Spin} from "antd";
 import {useLocation} from "react-router-dom";
 import defineTheme from "./Theme";
 import User from "./interface/User";
@@ -14,6 +14,7 @@ function App() {
     const [currentTheme, setCurrentTheme]
         = useState(defineTheme("/"));
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [spinning, setSpinning] = useState(false);
 
     useEffect(() => {
         setCurrentTheme(defineTheme(location.pathname));
@@ -36,10 +37,18 @@ function App() {
     return (
         <div>
             <ConfigProvider theme={currentTheme}>
-                {!isAdminPage()
-                    ? <UserPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-                    : <AdminPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-                }
+                <Spin tip="loading" className="spinner" spinning={spinning} size="large">
+                    {!isAdminPage()
+                        ? <UserPage currentUser={currentUser}
+                                    setCurrentUser={setCurrentUser}
+                                    setSpinning={setSpinning}
+                        />
+                        : <AdminPage currentUser={currentUser}
+                                     setCurrentUser={setCurrentUser}
+                                     setSpinning={setSpinning}
+                        />
+                    }
+                </Spin>
             </ConfigProvider>
         </div>
     );

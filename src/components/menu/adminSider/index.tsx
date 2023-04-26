@@ -31,8 +31,7 @@ function AdminSider() {
         <Sider width={200}
                style={{background: colorBgContainer}}
                breakpoint="lg"
-               collapsedWidth="10"
-               collapsed
+               collapsedWidth="0"
         >
             <Menu
                 mode="inline"
