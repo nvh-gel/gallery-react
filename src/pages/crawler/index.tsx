@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import {Button, Carousel, Col, Divider, Form, Image, List, Row, Space, Tag, Tooltip, Typography} from "antd";
+import React, {useCallback, useEffect, useState} from "react";
+import {Button, Carousel, Col, Divider, Form, Image, List, message, Row, Space, Tag, Tooltip, Typography} from "antd";
 import axios from "axios";
-import URL_CONFIG from "../../utils/URL_CONFIG";
+import URLS from "../../utils/URLS";
 import ModelData from "../../interface/ModelData";
 import {DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined} from "@ant-design/icons";
 import {InputNumber} from "antd/lib";
@@ -16,44 +16,40 @@ function CrawlerPage(props: any) {
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const [pageSize, setPageSize] = useState(20);
+    const [size, setSize] = useState(10);
     const paging: PaginationConfig = {
         onChange: handlePageChange,
-        pageSize: pageSize,
+        pageSize: size,
         total: total,
         responsive: true,
         hideOnSinglePage: true,
         showQuickJumper: false,
         showSizeChanger: false,
-        showLessItems: true,
     }
+    const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const loadData = (page: number, pageSize: number) => {
-            setSpinning(true);
-            const pagingParam = `/${page}/${pageSize}`;
-            const url = URL_CONFIG.BASE + URL_CONFIG.CRAWL_MODEL + pagingParam;
-            const token = localStorage.getItem("token");
-            axios.get(url, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                }
-            }).catch((e: Error) => {
-                setSpinning(false);
-                alert(e.message)
-            }).then((response) => {
-                const result = response?.data;
-                result.forEach((m: ModelData) => {
-                    m.key = m.objectId
-                });
-                setData(result);
-                setTotal(200);
-                setSpinning(false);
+    const loadData = useCallback((page: number, size: number) => {
+        setSpinning(true);
+        const pagingParam = `/${page}/${size}`;
+        const url = URLS.BASE + URLS.CRAWL_MODEL + pagingParam;
+        axios.get(url, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        }).catch((e: Error) => {
+            setSpinning(false);
+            alert(e.message)
+        }).then((response) => {
+            const result = response?.data.data;
+            result.forEach((m: ModelData) => {
+                m.key = m.objectId
             });
-        }
-
-        loadData(page, pageSize);
-    }, [page, pageSize, setSpinning]);
+            const total: number = response?.data.extra.total
+            setData(result);
+            setTotal(total);
+            setSpinning(false);
+        });
+    }, [setSpinning, token])
 
     const meta = (item: ModelData) => {
         return (
@@ -80,12 +76,11 @@ function CrawlerPage(props: any) {
                     {item.images.map((image) => {
                         const key = Math.random();
                         return (
-                            <Image key={`${image}-${key}`} src={image} width={600} height={360}/>
+                            <Image key={`${image}-${key}`} src={image} width={685} height={360}/>
                         );
                     })}
                 </Carousel>
             </Image.PreviewGroup>
-
         );
     }
 
@@ -93,8 +88,8 @@ function CrawlerPage(props: any) {
         return (
             <Form name="rating"
                   layout="inline"
-                  labelCol={{span: 6}}
-                  wrapperCol={{span: 14}}
+                  labelCol={{span: 8}}
+                  wrapperCol={{span: 16}}
             >
                 <Form.Item label="FC" className="form-rating-item">
                     <InputNumber value={item.fc}/>
@@ -124,7 +119,21 @@ function CrawlerPage(props: any) {
         );
     }
 
-    const action = () => {
+    function handleError(e: Error) {
+        message.error(e.message).then();
+    }
+
+    function handleSkip(e: any, objectId: string) {
+        setSpinning(true);
+        const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + objectId;
+        axios.put(url, null, {headers: {Authorization: `Bearer ${token}`}})
+            .catch(handleError)
+            .then((response) => {
+                message.success(response?.data.message).then(() => loadData(page, size));
+            })
+    }
+
+    function action(item: ModelData) {
         return (
             <Space size="middle" direction="vertical">
                 <Tooltip placement="right" title="Save">
@@ -137,17 +146,28 @@ function CrawlerPage(props: any) {
                     <Button type="dashed" shape="circle"><SwapOutlined/></Button>
                 </Tooltip>
                 <Tooltip placement="right" title="Skip">
-                    <Button type="default" shape="circle" danger><DeleteOutlined/></Button>
+                    <Button type="default" shape="circle" danger
+                            onClick={(e: any) => {
+                                return handleSkip(e, item.objectId)
+                            }}
+                    >
+                        <DeleteOutlined/>
+                    </Button>
                 </Tooltip>
             </Space>
         );
     }
 
     function handlePageChange(pageNumber: number, pageSize: number) {
-        setSpinning(true)
+        setSpinning(true);
+        setData([]);
         setPage(pageNumber);
-        setPageSize(pageSize);
+        setSize(pageSize);
     }
+
+    useEffect(() => {
+        loadData(page, size);
+    }, [page, size, setSpinning, token, loadData])
 
     return (
         <List
@@ -161,7 +181,7 @@ function CrawlerPage(props: any) {
                             <Col span={4}>{meta(item)}</Col>
                             <Col span={12}>{carousel(item)}</Col>
                             <Col span={6}>{ratingForm(item)}</Col>
-                            <Col span={2}>{action()}</Col>
+                            <Col span={2}>{action(item)}</Col>
                         </Row>
                     </List.Item>
                 );

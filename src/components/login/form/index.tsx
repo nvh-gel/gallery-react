@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form, Input} from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
-import URL_CONFIG from "../../../utils/URL_CONFIG";
+import URLS from "../../../utils/URLS";
 import axios from "axios";
 import User from "../../../interface/User";
 import {Buffer} from "buffer";
@@ -11,7 +11,7 @@ function LoginForm(props: any) {
     const {setCurrentUser, setModalLoginOpen} = props;
 
     function attemptLogin(data: any) {
-        const url = URL_CONFIG.BASE + URL_CONFIG.AUTH + URL_CONFIG.LOGIN;
+        const url = URLS.BASE + URLS.AUTH + URLS.LOGIN;
         axios.post(url, {
             username: data.username,
             password: Buffer.from(data.password, 'binary').toString('base64')
