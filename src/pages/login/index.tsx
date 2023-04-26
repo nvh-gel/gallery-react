@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Row, Space, Typography} from "antd";
-import LoginForm from "../../components/login";
+import LoginForm from "../../components/login/form";
 
 function LoginPage(props: any) {
 

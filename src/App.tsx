@@ -1,25 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import PageMenu from "./components/menu";
-import {ConfigProvider, Layout} from "antd";
-import {Content, Footer, Header} from "antd/es/layout/layout";
-import {HashRouter, Route, Routes, useLocation} from "react-router-dom";
-import PageFooter from "./components/footer";
-import HomePage from "./pages/home";
-import AlbumPage from "./pages/album";
-import AboutPage from "./pages/about";
-import ContactPage from "./pages/contact";
+import {ConfigProvider, Spin} from "antd";
+import {useLocation} from "react-router-dom";
 import defineTheme from "./Theme";
-import ModelPage from "./pages/model";
-import LoginPage from "./pages/login";
 import User from "./interface/User";
+import UserPage from "./pages/userpage";
+import AdminPage from "./pages/adminpage";
 
-function Page() {
+
+function App() {
 
     const location = useLocation();
     const [currentTheme, setCurrentTheme]
         = useState(defineTheme("/"));
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [spinning, setSpinning] = useState(false);
 
     useEffect(() => {
         setCurrentTheme(defineTheme(location.pathname));
@@ -35,49 +30,28 @@ function Page() {
         }
     }, [location]);
 
-    return (
-        <div className="container">
-            <ConfigProvider theme={currentTheme}>
-                <Layout className="app layout">
-                    <Header className="layout-header">
-                        <PageMenu currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-                    </Header>
-                    <Content className="content">
-                        <Routes>
-                            <Route path="/" key="home"
-                                   element={<HomePage/>}
-                            />
-                            <Route path="/model" key="model"
-                                   element={<ModelPage/>}
-                            />
-                            <Route path="/album" key="album"
-                                   element={<AlbumPage/>}
-                            />
-                            <Route path="/about" key="about"
-                                   element={<AboutPage/>}
-                            />
-                            <Route path="/contact" key="contact"
-                                   element={<ContactPage/>}
-                            />
-                            <Route path="/login" key="login"
-                                   element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>}
-                            />
-                        </Routes>
-                    </Content>
-                    <Footer>
-                        <PageFooter/>
-                    </Footer>
+    function isAdminPage() {
+        return location.pathname.startsWith("/admin");
+    }
 
-                </Layout>
+    return (
+        <div>
+            <ConfigProvider theme={currentTheme}>
+                <Spin tip="loading" className="spinner" spinning={spinning} size="large">
+                    {!isAdminPage()
+                        ? <UserPage currentUser={currentUser}
+                                    setCurrentUser={setCurrentUser}
+                                    setSpinning={setSpinning}
+                        />
+                        : <AdminPage currentUser={currentUser}
+                                     setCurrentUser={setCurrentUser}
+                                     setSpinning={setSpinning}
+                        />
+                    }
+                </Spin>
             </ConfigProvider>
         </div>
     );
 }
-
-const App: React.FC = () => (
-    <HashRouter>
-        <Page/>
-    </HashRouter>
-);
 
 export default App;

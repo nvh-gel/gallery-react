@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink, useLocation} from "react-router-dom";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {SyntheticEventData} from "react-dom/test-utils";
-import LoginModal from "../loginModal";
+import LoginModal from "../../login/modal";
 
 function PageMenu(props: any) {
 
@@ -46,8 +46,8 @@ function PageMenu(props: any) {
     }, {
         key: '/login',
         icon: currentUser === null
-            ? <LockOutlined style={{fontSize: 24}}/>
-            : <UserOutlined style={{fontSize: 24}}/>,
+            ? <LockOutlined style={{fontSize: 20}}/>
+            : <UserOutlined style={{fontSize: 20}}/>,
         children: currentUser === null ? null : [{
             label: 'Account',
             key: '/account',
