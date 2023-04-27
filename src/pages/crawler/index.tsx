@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {Button, Carousel, Col, Divider, Form, Image, List, message, Row, Space, Tag, Tooltip, Typography} from "antd";
+import {Button, Carousel, Col, Divider, Image, List, message, Row, Space, Tag, Tooltip, Typography} from "antd";
 import axios from "axios";
 import URLS from "../../utils/URLS";
 import ModelData from "../../interface/ModelData";
 import {DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined} from "@ant-design/icons";
-import {InputNumber} from "antd/lib";
 import "./crawler.css";
 import {PaginationConfig} from "antd/es/pagination";
+import RatingForm from "../../components/form/modelrating";
 
 const {Link} = Typography;
 
@@ -84,40 +84,6 @@ function CrawlerPage(props: any) {
         );
     }
 
-    const ratingForm = (item: ModelData) => {
-        return (
-            <Form name="rating"
-                  layout="inline"
-                  labelCol={{span: 8}}
-                  wrapperCol={{span: 16}}
-            >
-                <Form.Item label="FC" className="form-rating-item">
-                    <InputNumber value={item.fc}/>
-                </Form.Item>
-                <Form.Item label="BD" className="form-rating-item">
-                    <InputNumber value={item.bd}/>
-                </Form.Item>
-                <Form.Item label="SX" className="form-rating-item">
-                    <InputNumber value={item.sx}/>
-                </Form.Item>
-                <Form.Item label="CT" className="form-rating-item">
-                    <InputNumber value={item.ct}/>
-                </Form.Item>
-                <Form.Item label="BB" className="form-rating-item">
-                    <InputNumber value={item.bb}/>
-                </Form.Item>
-                <Form.Item label="WA" className="form-rating-item">
-                    <InputNumber value={item.wa}/>
-                </Form.Item>
-                <Form.Item label="HI" className="form-rating-item">
-                    <InputNumber value={item.hi}/>
-                </Form.Item>
-                <Form.Item label="AVG" className="form-rating-item">
-                    <InputNumber value={item.avg} disabled/>
-                </Form.Item>
-            </Form>
-        );
-    }
 
     function handleError(e: Error) {
         message.error(e.message).then();
@@ -180,7 +146,7 @@ function CrawlerPage(props: any) {
                         <Row align="middle" justify="space-between">
                             <Col span={4}>{meta(item)}</Col>
                             <Col span={12}>{carousel(item)}</Col>
-                            <Col span={6}>{ratingForm(item)}</Col>
+                            <Col span={6}><RatingForm item={item}/></Col>
                             <Col span={2}>{action(item)}</Col>
                         </Row>
                     </List.Item>

@@ -16,4 +16,11 @@ interface ModelData {
     numberOfAlbum: number,
 }
 
+export function calculateAverage(numbers: number[]) {
+
+    return Math.round(
+        numbers.reduce((sum, current) => sum + current, 0) / numbers.length * 100
+    ) / 100;
+}
+
 export default ModelData;
