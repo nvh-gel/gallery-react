@@ -2,18 +2,15 @@ import React, {useState} from "react";
 import ModelData, {calculateAverage} from "../../../interface/ModelData";
 import {Form, InputNumber} from "antd";
 import "./model-rating.css"
+import CrawlItemProp from "../../../interface/CrawlItemProp";
 
-interface FormPropType {
-    item: ModelData
-}
 
-function RatingForm({item}: FormPropType) {
+function RatingForm({item}: CrawlItemProp) {
 
     const [current, setCurrent] = useState(item)
     const [form] = Form.useForm();
 
     function handleFormValueChange(e: any) {
-        console.log(e)
         let editing: ModelData = {...current, ...e};
         const fc = +editing.fc;
         const bd = +editing.bd;

@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Button, Carousel, Col, Divider, Image, List, message, Row, Space, Tag, Tooltip, Typography} from "antd";
+import { Carousel, Col, Divider, Image, List, Row, Space, Tag, Typography, message } from "antd";
+import { PaginationConfig } from "antd/es/pagination";
 import axios from "axios";
-import URLS from "../../utils/URLS";
-import ModelData from "../../interface/ModelData";
-import {DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined} from "@ant-design/icons";
-import "./crawler.css";
-import {PaginationConfig} from "antd/es/pagination";
+import { useCallback, useEffect, useState } from "react";
+import Action from "../../components/action";
 import RatingForm from "../../components/form/modelrating";
+import ModelData from "../../interface/ModelData";
+import URLS from "../../utils/URLS";
+import "./crawler.css";
 
 const {Link} = Typography;
 
@@ -38,7 +38,7 @@ function CrawlerPage(props: any) {
             }
         }).catch((e: Error) => {
             setSpinning(false);
-            alert(e.message)
+            message.error(e.message);
         }).then((response) => {
             const result = response?.data.data;
             result.forEach((m: ModelData) => {
@@ -84,46 +84,6 @@ function CrawlerPage(props: any) {
         );
     }
 
-
-    function handleError(e: Error) {
-        message.error(e.message).then();
-    }
-
-    function handleSkip(e: any, objectId: string) {
-        setSpinning(true);
-        const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + objectId;
-        axios.put(url, null, {headers: {Authorization: `Bearer ${token}`}})
-            .catch(handleError)
-            .then((response) => {
-                message.success(response?.data.message).then(() => loadData(page, size));
-            })
-    }
-
-    function action(item: ModelData) {
-        return (
-            <Space size="middle" direction="vertical">
-                <Tooltip placement="right" title="Save">
-                    <Button type="primary" shape="circle" name="save"><DownloadOutlined/></Button>
-                </Tooltip>
-                <Tooltip placement="right" title="Move">
-                    <Button type="default" shape="circle"><LoginOutlined/></Button>
-                </Tooltip>
-                <Tooltip placement="right" title="Link">
-                    <Button type="dashed" shape="circle"><SwapOutlined/></Button>
-                </Tooltip>
-                <Tooltip placement="right" title="Skip">
-                    <Button type="default" shape="circle" danger
-                            onClick={(e: any) => {
-                                return handleSkip(e, item.objectId)
-                            }}
-                    >
-                        <DeleteOutlined/>
-                    </Button>
-                </Tooltip>
-            </Space>
-        );
-    }
-
     function handlePageChange(pageNumber: number, pageSize: number) {
         setSpinning(true);
         setData([]);
@@ -147,7 +107,7 @@ function CrawlerPage(props: any) {
                             <Col span={4}>{meta(item)}</Col>
                             <Col span={12}>{carousel(item)}</Col>
                             <Col span={6}><RatingForm item={item}/></Col>
-                            <Col span={2}>{action(item)}</Col>
+                            <Col span={2}>{<Action item={item} setSpinning={setSpinning} loadData={loadData}/>}</Col>
                         </Row>
                     </List.Item>
                 );
