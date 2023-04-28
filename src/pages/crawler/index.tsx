@@ -4,19 +4,20 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Action from "../../components/action";
 import RatingForm from "../../components/form/modelrating";
-import ModelData from "../../interface/ModelData";
+import ModelData, { Dictionary } from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
 import "./crawler.css";
 
-const {Link} = Typography;
+const { Link } = Typography;
 
 function CrawlerPage(props: any) {
 
-    const {setSpinning} = props;
+    const { setSpinning } = props;
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [size, setSize] = useState(10);
+    const [editData, setEditData] = useState<Dictionary<ModelData>>({});
     const paging: PaginationConfig = {
         onChange: handlePageChange,
         pageSize: size,
@@ -57,7 +58,7 @@ function CrawlerPage(props: any) {
                 title={
                     <Space direction="vertical">
                         <Link href={item.url}>{item.name}</Link>
-                        <Divider/>
+                        <Divider />
                     </Space>
                 }
                 description={item.rel.map((tag) => {
@@ -76,7 +77,7 @@ function CrawlerPage(props: any) {
                     {item.images.map((image) => {
                         const key = Math.random();
                         return (
-                            <Image key={`${image}-${key}`} src={image} width={685} height={360}/>
+                            <Image key={`${image}-${key}`} src={image} width={685} height={360} />
                         );
                     })}
                 </Carousel>
@@ -106,8 +107,24 @@ function CrawlerPage(props: any) {
                         <Row align="middle" justify="space-between">
                             <Col span={4}>{meta(item)}</Col>
                             <Col span={12}>{carousel(item)}</Col>
-                            <Col span={6}><RatingForm item={item}/></Col>
-                            <Col span={2}>{<Action item={item} setSpinning={setSpinning} loadData={loadData}/>}</Col>
+                            <Col span={6}>
+                                <RatingForm
+                                    item={item}
+                                    editData={editData}
+                                    setEditData={setEditData}
+                                />
+                            </Col>
+                            <Col span={2}>
+                                <Action
+                                    item={item}
+                                    setSpinning={setSpinning}
+                                    loadData={loadData}
+                                    page={page}
+                                    size={size}
+                                    editData={editData}
+                                    setEditData={setEditData}
+                                />
+                            </Col>
                         </Row>
                     </List.Item>
                 );

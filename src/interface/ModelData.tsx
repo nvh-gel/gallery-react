@@ -1,4 +1,4 @@
-interface ModelData {
+export default interface ModelData {
     key: string,
     objectId: string,
     name: string,
@@ -14,13 +14,15 @@ interface ModelData {
     ct: number,
     avg: number,
     numberOfAlbum: number,
-}
+};
 
 export function calculateAverage(numbers: number[]) {
 
     return Math.round(
         numbers.reduce((sum, current) => sum + current, 0) / numbers.length * 100
     ) / 100;
-}
+};
 
-export default ModelData;
+export interface Dictionary<T> {
+    [id: string]: T
+};

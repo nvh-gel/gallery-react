@@ -4,28 +4,57 @@ import axios from "axios";
 import CrawlItemProp from "../../interface/CrawlItemProp";
 import URLS from "../../utils/URLS";
 
-export default function Action({ item, setSpinning, loadData }: CrawlItemProp) {
+export default function Action(props: CrawlItemProp) {
 
+    const { item, setSpinning, loadData, page, size, editData, setEditData } = props;
     const token = localStorage.getItem('token');
 
-    function handleSkip(e: any, objectId: string) {
-        if (setSpinning) {
-            setSpinning(true);
-        }
-        const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + objectId;
-        axios.put(url, null, { headers: { Authorization: `Bearer ${token}` } })
-            .catch((e: Error) => { message.error(e.message); })
-            .then((response) => {
-                if (loadData) {
-                    message.success(response?.data.message).then(() => loadData(1, 10));
-                }
-            });
+    const spinning = setSpinning ? setSpinning : (spin: boolean) => { };
+    function handleSkip() {
+        spinning(true);
+        const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + item.objectId;
+        axios.put(url, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).catch((e: Error) => {
+            spinning(false);
+            message.error(e.message);
+        }).then((response) => {
+            if (loadData && page && size) {
+                message.success(response?.data.message).then(() => loadData(page, size));
+            }
+        });
+    }
+
+    function handleSave() {
+        spinning(true);
+        let saveData = editData ? editData[item.objectId] : item;
+        saveData = saveData && saveData !== null ? saveData : item;
+        const url = URLS.BASE + URLS.CRAWL_MODEL;
+        axios.put(url, saveData, {
+            headers: { Authorization: `Bearer ${token}` },
+        }).catch((e: Error) => {
+            spinning(false);
+            message.error(e.message);
+        }).then((response) => {
+            if (loadData && page && size) {
+                message.success(`${response?.data.message} ${response?.data.data}`)
+                    .then(() => loadData(page, size));
+            }
+            if (editData && editData[item.objectId] && setEditData) {
+                delete editData[item.objectId];
+                setEditData(editData);
+            }
+        });
     }
 
     return (
         <Space size="middle" direction="vertical">
             <Tooltip placement="right" title="Save">
-                <Button type="primary" shape="circle" name="save"><DownloadOutlined /></Button>
+                <Button type="primary" shape="circle" name="save" onClick={handleSave}>
+                    <DownloadOutlined />
+                </Button>
             </Tooltip>
             <Tooltip placement="right" title="Move">
                 <Button type="default" shape="circle"><LoginOutlined /></Button>
@@ -34,14 +63,10 @@ export default function Action({ item, setSpinning, loadData }: CrawlItemProp) {
                 <Button type="dashed" shape="circle"><SwapOutlined /></Button>
             </Tooltip>
             <Tooltip placement="right" title="Skip">
-                <Button type="default" shape="circle" danger
-                    onClick={(e: any) => {
-                        return handleSkip(e, item.objectId)
-                    }}
-                >
+                <Button type="default" shape="circle" danger onClick={handleSkip}>
                     <DeleteOutlined />
                 </Button>
             </Tooltip>
         </Space>
     );
-}
+};

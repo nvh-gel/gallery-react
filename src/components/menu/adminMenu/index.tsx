@@ -1,13 +1,12 @@
-import React from "react";
-import {Menu, MenuProps} from "antd";
-import {NavLink, useLocation} from "react-router-dom";
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
-
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Menu, MenuProps } from "antd";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function AdminMenu(props: any) {
 
-    const {currentUser} = props;
+    const { currentUser, setCurrentUser } = props;
     const location = useLocation();
+    const navigate = useNavigate();
 
     const items: MenuProps['items'] = [
         {
@@ -22,10 +21,10 @@ function AdminMenu(props: any) {
         }, {
             key: '/login',
             icon: currentUser === null
-                ? <LockOutlined style={{fontSize: 20}}/>
-                : <UserOutlined style={{fontSize: 20}}/>,
+                ? <LockOutlined style={{ fontSize: 20 }} />
+                : <UserOutlined style={{ fontSize: 20 }} />,
             children: currentUser === null ? [] : [{
-                label: 'Account',
+                label: currentUser.username,
                 key: '/account',
             }, {
                 label: 'Logout',
@@ -34,11 +33,21 @@ function AdminMenu(props: any) {
         },
     ];
 
+    function handleClick(event: any): void {
+        if (event.key === '/logout') {
+            setCurrentUser(null);
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            navigate('/login');
+        }
+    }
+
     return (
         <Menu mode="horizontal"
-              theme="dark"
-              selectedKeys={[location.pathname]}
-              items={items}
+            theme="dark"
+            selectedKeys={[location.pathname]}
+            items={items}
+            onClick={handleClick}
         />
     );
 }
