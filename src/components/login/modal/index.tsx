@@ -1,24 +1,22 @@
-import React from "react";
+import { Modal } from "antd";
 import LoginForm from "../form";
-import {Modal} from "antd";
 
-function LoginModal(props: any) {
+export default function LoginModal(props: any) {
 
-    const {setCurrentUser, modalLoginOpen, setModalLoginOpen} = props;
+    const { setCurrentUser, modalLoginOpen, setModalLoginOpen, setSpinning } = props;
 
     return (
         <Modal title="Login"
-               centered
-               open={modalLoginOpen}
-               onCancel={() => setModalLoginOpen(false)}
-               width={800}
-               footer={null}
+            centered
+            open={modalLoginOpen}
+            onCancel={() => setModalLoginOpen(false)}
+            width={800}
+            footer={null}
         >
             <LoginForm
                 setCurrentUser={setCurrentUser}
-                setModalLoginOpen={setModalLoginOpen}/>
+                setModalLoginOpen={setModalLoginOpen}
+                setSpinning={setSpinning} />
         </Modal>
     );
-}
-
-export default LoginModal;
+};

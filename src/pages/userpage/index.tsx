@@ -1,51 +1,54 @@
-import React from "react";
-import {Layout} from "antd";
+import { Layout } from "antd";
+import { Content, Footer, Header } from "antd/es/layout/layout";
+import { Route, Routes } from "react-router-dom";
 import PageMenu from "../../components/menu/userMenu";
-import {Content, Footer, Header} from "antd/es/layout/layout";
-import {Route, Routes} from "react-router-dom";
-import HomePage from "../home";
-import ModelPage from "../model";
-import AlbumPage from "../album";
 import AboutPage from "../about";
+import AlbumPage from "../album";
 import ContactPage from "../contact";
+import HomePage from "../home";
 import LoginPage from "../login";
+import ModelPage from "../model";
 
-function UserPage(props: any) {
+export default function UserPage(props: any) {
 
-    const {currentUser, setCurrentUser} = props;
+    const { currentUser, setCurrentUser, setSpinning } = props;
 
     return (
         <Layout className="app layout">
             <Header className="layout-header">
-                <PageMenu currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+                <PageMenu currentUser={currentUser}
+                    setCurrentUser={setCurrentUser}
+                    setSpinning={setSpinning} />
             </Header>
             <Content className="content">
                 <Routes>
                     <Route path="/" key="home"
-                           element={<HomePage/>}
+                        element={<HomePage />}
                     />
                     <Route path="/model" key="model"
-                           element={<ModelPage/>}
+                        element={<ModelPage />}
                     />
                     <Route path="/album" key="album"
-                           element={<AlbumPage/>}
+                        element={<AlbumPage />}
                     />
                     <Route path="/about" key="about"
-                           element={<AboutPage/>}
+                        element={<AboutPage />}
                     />
                     <Route path="/contact" key="contact"
-                           element={<ContactPage/>}
+                        element={<ContactPage />}
                     />
                     <Route path="/login" key="login"
-                           element={<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>}
+                        element={<LoginPage
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
+                            setSpinning={setSpinning}
+                        />}
                     />
                 </Routes>
             </Content>
-            <Footer style={{textAlign: "center"}}>
+            <Footer style={{ textAlign: "center" }}>
                 Developed by Eden. Contact us at nvhien2703@outlook.com
             </Footer>
         </Layout>
     );
-}
-
-export default UserPage;
+};
