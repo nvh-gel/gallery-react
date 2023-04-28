@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Action from "../../components/action";
 import RatingForm from "../../components/form/modelrating";
+import MovingModal from "../../components/modal/movemodel";
 import ModelData, { Dictionary } from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
 import "./crawler.css";
@@ -18,6 +19,8 @@ function CrawlerPage(props: any) {
     const [total, setTotal] = useState(0);
     const [size, setSize] = useState(10);
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
+    const [showMovingModal, setShowMovingModal] = useState(false);
+    const [movingItem, setMovingItem] = useState<ModelData>();
     const paging: PaginationConfig = {
         onChange: handlePageChange,
         pageSize: size,
@@ -123,13 +126,21 @@ function CrawlerPage(props: any) {
                                     size={size}
                                     editData={editData}
                                     setEditData={setEditData}
+                                    setShowMovingModal={setShowMovingModal}
+                                    setMovingItem={setMovingItem}
                                 />
                             </Col>
                         </Row>
                     </List.Item>
                 );
             }}
-        />
+        >
+            <MovingModal showMovingModal={showMovingModal}
+                setShowMovingModal={setShowMovingModal}
+                modelData={movingItem}
+                setEditData={setEditData}
+            />
+        </List>
     );
 }
 

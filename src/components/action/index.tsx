@@ -2,14 +2,15 @@ import { DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined } from "@
 import { Button, Space, Tooltip, message } from "antd";
 import axios from "axios";
 import CrawlItemProp from "../../interface/CrawlItemProp";
+import ModelData from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
 
 export default function Action(props: CrawlItemProp) {
 
-    const { item, setSpinning, loadData, page, size, editData, setEditData } = props;
+    const { item, setSpinning, loadData, page, size, editData, setEditData, setShowMovingModal, setMovingItem } = props;
     const token = localStorage.getItem('token');
-
     const spinning = setSpinning ? setSpinning : (spin: boolean) => { };
+
     function handleSkip() {
         spinning(true);
         const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + item.objectId;
@@ -27,10 +28,16 @@ export default function Action(props: CrawlItemProp) {
         });
     }
 
+    function retrieveData(): ModelData {
+
+        return editData && editData[item.objectId] && editData[item.objectId] !== null
+            ? editData[item.objectId]
+            : item;
+    }
+
     function handleSave() {
         spinning(true);
-        let saveData = editData ? editData[item.objectId] : item;
-        saveData = saveData && saveData !== null ? saveData : item;
+        const saveData = retrieveData();
         const url = URLS.BASE + URLS.CRAWL_MODEL;
         axios.put(url, saveData, {
             headers: { Authorization: `Bearer ${token}` },
@@ -49,6 +56,15 @@ export default function Action(props: CrawlItemProp) {
         });
     }
 
+    function handleMove() {
+
+        const moveData = retrieveData();
+        if (setShowMovingModal && setMovingItem) {
+            setMovingItem(moveData);
+            setShowMovingModal(true);
+        }
+    }
+
     return (
         <Space size="middle" direction="vertical">
             <Tooltip placement="right" title="Save">
@@ -57,10 +73,14 @@ export default function Action(props: CrawlItemProp) {
                 </Button>
             </Tooltip>
             <Tooltip placement="right" title="Move">
-                <Button type="default" shape="circle"><LoginOutlined /></Button>
+                <Button type="default" shape="circle" name="move" onClick={handleMove}>
+                    <LoginOutlined />
+                </Button>
             </Tooltip>
             <Tooltip placement="right" title="Link">
-                <Button type="dashed" shape="circle"><SwapOutlined /></Button>
+                <Button type="dashed" shape="circle">
+                    <SwapOutlined />
+                </Button>
             </Tooltip>
             <Tooltip placement="right" title="Skip">
                 <Button type="default" shape="circle" danger onClick={handleSkip}>
