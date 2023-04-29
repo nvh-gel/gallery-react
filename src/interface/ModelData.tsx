@@ -1,9 +1,9 @@
-export default interface ModelData {
+export interface ModelData {
     key: string,
     objectId: string,
     name: string,
     url: string,
-    rel: string[],
+    rel: ModelTag[],
     images: string[],
     fc: number,
     bb: number,
@@ -14,6 +14,13 @@ export default interface ModelData {
     ct: number,
     avg: number,
     numberOfAlbum: number,
+};
+
+export interface ModelTag {
+    name: string,
+    url: string,
+    isPublisher: boolean,
+    isCategory: boolean,
 };
 
 export function calculateAverage(numbers: number[]) {

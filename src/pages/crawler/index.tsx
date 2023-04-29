@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import Action from "../../components/action";
 import RatingForm from "../../components/form/modelrating";
 import MovingModal from "../../components/modal/movemodel";
-import ModelData, { Dictionary } from "../../interface/ModelData";
+import { Dictionary, ModelData } from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
 import "./crawler.css";
 
@@ -60,14 +60,14 @@ function CrawlerPage(props: any) {
             <List.Item.Meta
                 title={
                     <Space direction="vertical">
-                        <Link href={item.url}>{item.name}</Link>
+                        <Link href={item.url} target="_blank">{item.name}</Link>
                         <Divider />
                     </Space>
                 }
                 description={item.rel.map((tag) => {
-                    let color = tag.length > 8 ? "blue" : "green";
-                    color = tag.length > 15 ? "red" : color;
-                    return <Tag key={tag} color={color} className="model-tag">{tag.toUpperCase()}</Tag>;
+                    let color = tag.isPublisher ? 'blue' : 'green'
+                    color = tag.isCategory ? 'red' : color
+                    return <Tag key={tag.name} color={color} className="model-tag">{tag.name.toUpperCase()}</Tag>;
                 })}
             />
         );

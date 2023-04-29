@@ -2,7 +2,7 @@ import { DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined } from "@
 import { Button, Space, Tooltip, message } from "antd";
 import axios from "axios";
 import CrawlItemProp from "../../interface/CrawlItemProp";
-import ModelData from "../../interface/ModelData";
+import { ModelData } from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
 
 export default function Action(props: CrawlItemProp) {

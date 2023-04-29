@@ -37,7 +37,7 @@ function App() {
     return (
         <div>
             <ConfigProvider theme={currentTheme}>
-                <Spin tip="loading" className="spinner" spinning={spinning} size="large">
+                <Spin tip="loading" spinning={spinning} size="large" style={{position:'fixed', top:'30%'}}>
                     {!isAdminPage()
                         ? <UserPage currentUser={currentUser}
                                     setCurrentUser={setCurrentUser}

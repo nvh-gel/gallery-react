@@ -1,0 +1,21 @@
+.image-box {
+    width: 100%;
+    position: relative;
+}
+
+.button-left, .button-right {
+    top: 0;
+    position: absolute;
+    top: 40%;
+    /* height: 100%; */
+    opacity: 30%;
+    height: 20%;
+}
+
+.button-left {
+    left: 0;
+}
+
+.button-right {
+    right: 0;
+}
