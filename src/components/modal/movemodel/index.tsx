@@ -1,6 +1,8 @@
-import { Divider, Form, Image, Modal, Select, SelectProps, Typography } from "antd";
+import { DatePicker, Divider, Form, InputNumber, Modal, Select, SelectProps, Typography } from "antd";
 import FormItem from "antd/es/form/FormItem";
-import ModelData, { Dictionary } from "../../../interface/ModelData";
+import TextArea from "antd/es/input/TextArea";
+import { Dictionary, ModelData, ModelTag } from "../../../interface/ModelData";
+import ImageBox from "../../image_box";
 
 interface MovingProp {
 
@@ -22,13 +24,18 @@ export default function MovingModal(props: MovingProp) {
         setShowMovingModal(false);
     }
 
-    function toSelectProp(data: string[] | undefined): SelectProps['options'] {
-
+    function toSelectProp(data: ModelTag[] | undefined): SelectProps['options'] {
         if (data) {
-            return data.map((d: string) => { return { label: d, value: d }; });
+            return data.map((d: ModelTag) => {
+                return { label: d.name, value: d.name };
+            });
         }
         return [];
     }
+
+    const defaultTags = modelData?.rel
+        .filter((tag) => !tag.isCategory && !tag.isPublisher)
+        .map((tag) => tag.name);
 
     return (
         <Modal
@@ -36,16 +43,43 @@ export default function MovingModal(props: MovingProp) {
             open={showMovingModal}
             onCancel={handleCancel}
             onOk={handleOk}
-            width={640}
+            width={800}
+            key={modelData?.objectId}
         >
-            <Form className="form" title="Moving model" layout="horizontal" labelAlign="right">
-                <Typography.Title level={3}>{modelData?.name}</Typography.Title>
-                <Image src={modelData?.images[0]} preview={false} />
+            <Form className="form"
+                layout="horizontal"
+                labelAlign="right"
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 18 }}
+            >
+                <Typography.Title level={3} editable>{modelData?.name}</Typography.Title>
+                <ImageBox images={modelData?.images} />
                 <Divider />
-                <FormItem label="Tags">
-                    <Select mode="multiple" options={toSelectProp(modelData?.rel)} defaultValue={modelData?.rel}/>
+                <FormItem label="Nicks">
+                    <Select mode="multiple"
+                        options={toSelectProp(modelData?.rel)}
+                        defaultValue={defaultTags} />
+                </FormItem>
+                <FormItem label="Day of birth" name="dob">
+                    <DatePicker />
+                </FormItem>
+                <FormItem label="Sizes" style={{ marginBottom: 0 }}>
+                    <FormItem name="boob" style={{ display: 'inline-block' }}>
+                        <InputNumber min={0} max={100} />
+                    </FormItem>
+                    {' - '}
+                    <FormItem name="waist" style={{ display: 'inline-block' }}>
+                        <InputNumber min={0} max={100} />
+                    </FormItem>
+                    {' - '}
+                    <FormItem name="hip" style={{ display: 'inline-block' }}>
+                        <InputNumber min={0} max={100} />
+                    </FormItem>
+                </FormItem>
+                <FormItem label="Description" name="description">
+                    <TextArea></TextArea>
                 </FormItem>
             </Form>
-        </Modal>
+        </Modal >
     );
 };

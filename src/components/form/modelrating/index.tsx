@@ -1,7 +1,7 @@
 import { Form, InputNumber } from "antd";
 import { useState } from "react";
 import CrawlItemProp from "../../../interface/CrawlItemProp";
-import ModelData, { calculateAverage } from "../../../interface/ModelData";
+import { ModelData, calculateAverage } from "../../../interface/ModelData";
 import "./model-rating.css";
 
 function RatingForm(props: CrawlItemProp) {
