@@ -34,17 +34,24 @@ export interface Dictionary<T> {
 };
 
 export interface Model {
-    name: string,
-    navtiveName: string,
-    dateOfBirth: Date,
-    yearOfBirth: number,
-    thumbnail: string,
-    url: string,
-    nicknames: Nickname[],
+    id?: number,
+    objectId?: string,
+    name?: string,
+    nativeName?: string,
+    url?: string,
+    thumbnail?: string,
+    dateOfBirth?: Date,
+    yearOfBirth?: number,
+    boob?: number,
+    waist?: number,
+    hip?: number,
+    description?: string,
+    nicknames?: Nickname[],
 }
 
 export interface Nickname {
-    nick: string,
-    url: string,
-    modelId: number,
+    id?: number,
+    nick?: string,
+    url?: string,
+    modelId?: number,
 }

@@ -3,7 +3,7 @@ import Checkbox from "antd/es/checkbox/Checkbox";
 import axios from "axios";
 import { Buffer } from "buffer";
 import User from "../../../interface/User";
-import URLS from "../../../utils/URLS";
+import { Urls } from "../../../utils/Urls";
 
 function LoginForm(props: any) {
 
@@ -11,7 +11,7 @@ function LoginForm(props: any) {
 
     function attemptLogin(data: any) {
         setSpinning(true);
-        const url = URLS.BASE + URLS.AUTH + URLS.LOGIN;
+        const url = Urls.BASE + Urls.AUTH + Urls.LOGIN;
         axios.post(url, {
             username: data.username,
             password: Buffer.from(data.password, 'binary').toString('base64')

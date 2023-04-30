@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import Action from "../../components/action";
 import RatingForm from "../../components/form/modelrating";
 import { Dictionary, ModelData } from "../../interface/ModelData";
-import URLS from "../../utils/URLS";
+import { Urls } from "../../utils/Urls";
 import "./crawler.css";
 
 const { Link } = Typography;
@@ -33,7 +33,7 @@ function CrawlerPage(props: any) {
     const loadData = useCallback((page: number, size: number) => {
         setSpinning(true);
         const pagingParam = `/${page}/${size}`;
-        const url = URLS.BASE + URLS.CRAWL_MODEL + pagingParam;
+        const url = Urls.BASE + Urls.CRAWL_MODEL + pagingParam;
         axios.get(url, {
             headers: {
                 "Authorization": `Bearer ${token}`,

@@ -1,35 +1,78 @@
-import { Button, DatePicker, Divider, Form, InputNumber, Modal, Select, SelectProps, Typography } from "antd";
+import {
+    Button, DatePicker, Divider, Form, Input, InputNumber, Modal, Select, SelectProps, Typography, message
+} from "antd";
 import { useForm } from "antd/es/form/Form";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
 import dayjs, { Dayjs } from 'dayjs';
-import { Dispatch, SetStateAction } from "react";
-import { Dictionary, ModelData, ModelTag } from "../../../interface/ModelData";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Model, ModelData, ModelTag } from "../../../interface/ModelData";
+import { config } from "../../../utils/Request";
+import { Urls } from "../../../utils/Urls";
 import ImageBox from "../../image_box";
 
 interface MovingProp {
 
     showMovingModal: boolean,
-    modelData: ModelData | undefined,
+    modelData?: ModelData,
     setShowMovingModal: (show: boolean) => void,
-    setEditData: Dispatch<SetStateAction<Dictionary<ModelData>>> | undefined,
+    setSpinning?: Dispatch<SetStateAction<boolean>>,
+    loadData?: (p: number, s: number) => void,
+    page?: number,
+    size?: number,
 }
 
 export default function MovingModal(props: MovingProp) {
 
-    const { showMovingModal, setShowMovingModal, setEditData, modelData } = props;
+    const { showMovingModal, setShowMovingModal, modelData, setSpinning, loadData, page, size }
+        = props;
     const [form] = useForm();
     const defaultTags = modelData?.rel
         .filter((tag) => !tag.isCategory && !tag.isPublisher)
         .map((tag) => tag.name);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const spinning = setSpinning ? setSpinning : () => { };
 
     function handleCancel(): void {
         setShowMovingModal(false);
     }
 
     function handleSubmit(data: any): void {
-        console.log(data);
         setShowMovingModal(false);
+        spinning(true);
+        const moveData = prepareMoveData(data);
+        const url = Urls.BASE + Urls.CRAWL_MODEL + Urls.MOVE;
+        axios.post(url, moveData, config)
+            .catch((ex: Error) => {
+                message.error(ex.message);
+                spinning(false);
+            })
+            .then((response) => {
+                message.success(response?.data.message);
+                if (loadData && page && size) {
+                    loadData(page, size);
+                }
+            })
+    }
+
+    function prepareMoveData(data: any): Model {
+        return {
+            objectId: modelData?.objectId,
+            name: modelData?.name,
+            nativeName: data.nativeName,
+            url: modelData?.url,
+            thumbnail: modelData?.images[currentIndex],
+            dateOfBirth: data.dob?.toDate(),
+            yearOfBirth: data.yob?.year(),
+            boob: data.boob,
+            waist: data.waist,
+            hip: data.hip,
+            description: data.description,
+            nicknames: modelData?.rel
+                .filter((t) => data.nicks?.includes(t.name))
+                .map((t) => { return { nick: t.name, url: t.url } }),
+        }
     }
 
     function toSelectProp(data: ModelTag[] | undefined): SelectProps['options'] {
@@ -60,6 +103,7 @@ export default function MovingModal(props: MovingProp) {
             onCancel={handleCancel}
         >
             <Form form={form}
+                name="moving-form"
                 className="form"
                 layout="horizontal"
                 labelAlign="right"
@@ -68,8 +112,13 @@ export default function MovingModal(props: MovingProp) {
                 onFinish={handleSubmit}
             >
                 <Typography.Title level={3} editable>{modelData?.name}</Typography.Title>
-                <ImageBox images={modelData?.images} />
+                <ImageBox images={modelData?.images}
+                    currentIndex={currentIndex}
+                    setCurrentIndex={setCurrentIndex} />
                 <Divider />
+                <FormItem label="Native name" name="nativeName">
+                    <Input />
+                </FormItem>
                 <FormItem label="Nicks" name="nicks" initialValue={defaultTags}>
                     <Select mode="tags" options={toSelectProp(modelData?.rel)} allowClear />
                 </FormItem>
@@ -95,7 +144,7 @@ export default function MovingModal(props: MovingProp) {
                     </FormItem>
                 </FormItem>
                 <FormItem label="Description" name="description">
-                    <TextArea></TextArea>
+                    <TextArea />
                 </FormItem>
             </Form>
         </Modal >

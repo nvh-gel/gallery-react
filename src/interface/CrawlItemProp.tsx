@@ -3,7 +3,7 @@ import { Dictionary, ModelData } from "./ModelData";
 
 export default interface CrawlItemProp {
     item: ModelData,
-    setSpinning?: (spinnin: boolean) => {},
+    setSpinning?: Dispatch<SetStateAction<boolean>>,
     loadData?: (page: number, size: number) => void,
     page?: number,
     size?: number,
