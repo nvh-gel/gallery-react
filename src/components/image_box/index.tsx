@@ -1,12 +1,10 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Image, Space } from "antd";
-import { useState } from "react";
 import "./image_box.css";
 
 export default function ImageBox(props: any) {
 
-    const { images } = props;
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const { images, currentIndex, setCurrentIndex } = props;
 
     function handlePreviousImg() {
         const newIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;

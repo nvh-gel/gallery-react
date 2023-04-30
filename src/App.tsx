@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import {ConfigProvider, Spin} from "antd";
-import {useLocation} from "react-router-dom";
+import { ConfigProvider, Spin } from "antd";
+import { useLocation } from "react-router-dom";
 import defineTheme from "./Theme";
 import User from "./interface/User";
 import UserPage from "./pages/userpage";
@@ -37,15 +37,19 @@ function App() {
     return (
         <div>
             <ConfigProvider theme={currentTheme}>
-                <Spin tip="loading" spinning={spinning} size="large" style={{position:'fixed', top:'30%'}}>
+                <Spin tip="loading"
+                    spinning={spinning}
+                    size="large"
+                    style={{position:'fixed',top:'30%', zIndex:1000}}
+                >
                     {!isAdminPage()
                         ? <UserPage currentUser={currentUser}
-                                    setCurrentUser={setCurrentUser}
-                                    setSpinning={setSpinning}
+                            setCurrentUser={setCurrentUser}
+                            setSpinning={setSpinning}
                         />
                         : <AdminPage currentUser={currentUser}
-                                     setCurrentUser={setCurrentUser}
-                                     setSpinning={setSpinning}
+                            setCurrentUser={setCurrentUser}
+                            setSpinning={setSpinning}
                         />
                     }
                 </Spin>

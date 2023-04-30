@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import CrawlItemProp from "../../interface/CrawlItemProp";
 import { ModelData } from "../../interface/ModelData";
-import URLS from "../../utils/URLS";
+import { Urls } from "../../utils/Urls";
 import MovingModal from "../modal/move-model";
 
 export default function Action(props: CrawlItemProp) {
@@ -17,7 +17,7 @@ export default function Action(props: CrawlItemProp) {
 
     function handleSkip() {
         spinning(true);
-        const url = URLS.BASE + URLS.CRAWL_MODEL + URLS.SKIP + '/' + item.objectId;
+        const url = Urls.BASE + Urls.CRAWL_MODEL + Urls.SKIP + '/' + item.objectId;
         axios.put(url, null, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -41,7 +41,7 @@ export default function Action(props: CrawlItemProp) {
     function handleSave() {
         spinning(true);
         const saveData = retrieveData();
-        const url = URLS.BASE + URLS.CRAWL_MODEL;
+        const url = Urls.BASE + Urls.CRAWL_MODEL;
         axios.put(url, saveData, {
             headers: { Authorization: `Bearer ${token}` },
         }).catch((e: Error) => {
@@ -82,7 +82,10 @@ export default function Action(props: CrawlItemProp) {
             <MovingModal showMovingModal={showMovingModal}
                 setShowMovingModal={setShowMovingModal}
                 modelData={movingItem}
-                setEditData={setEditData}
+                setSpinning={setSpinning}
+                loadData={loadData}
+                page={page}
+                size={size}
             />
             <Tooltip placement="right" title="Link">
                 <Button type="dashed" shape="circle">
