@@ -1,15 +1,19 @@
 import { DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined } from "@ant-design/icons";
 import { Button, Space, Tooltip, message } from "antd";
 import axios from "axios";
+import { useState } from "react";
 import CrawlItemProp from "../../interface/CrawlItemProp";
 import { ModelData } from "../../interface/ModelData";
 import URLS from "../../utils/URLS";
+import MovingModal from "../modal/move-model";
 
 export default function Action(props: CrawlItemProp) {
 
-    const { item, setSpinning, loadData, page, size, editData, setEditData, setShowMovingModal, setMovingItem } = props;
+    const { item, setSpinning, loadData, page, size, editData, setEditData } = props;
     const token = localStorage.getItem('token');
     const spinning = setSpinning ? setSpinning : (spin: boolean) => { };
+    const [showMovingModal, setShowMovingModal] = useState(false);
+    const [movingItem, setMovingItem] = useState<ModelData>();
 
     function handleSkip() {
         spinning(true);
@@ -29,7 +33,6 @@ export default function Action(props: CrawlItemProp) {
     }
 
     function retrieveData(): ModelData {
-
         return editData && editData[item.objectId] && editData[item.objectId] !== null
             ? editData[item.objectId]
             : item;
@@ -57,7 +60,6 @@ export default function Action(props: CrawlItemProp) {
     }
 
     function handleMove() {
-
         const moveData = retrieveData();
         if (setShowMovingModal && setMovingItem) {
             setMovingItem(moveData);
@@ -77,6 +79,11 @@ export default function Action(props: CrawlItemProp) {
                     <LoginOutlined />
                 </Button>
             </Tooltip>
+            <MovingModal showMovingModal={showMovingModal}
+                setShowMovingModal={setShowMovingModal}
+                modelData={movingItem}
+                setEditData={setEditData}
+            />
             <Tooltip placement="right" title="Link">
                 <Button type="dashed" shape="circle">
                     <SwapOutlined />

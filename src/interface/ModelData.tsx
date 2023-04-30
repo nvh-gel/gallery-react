@@ -24,7 +24,6 @@ export interface ModelTag {
 };
 
 export function calculateAverage(numbers: number[]) {
-
     return Math.round(
         numbers.reduce((sum, current) => sum + current, 0) / numbers.length * 100
     ) / 100;
@@ -33,3 +32,19 @@ export function calculateAverage(numbers: number[]) {
 export interface Dictionary<T> {
     [id: string]: T
 };
+
+export interface Model {
+    name: string,
+    navtiveName: string,
+    dateOfBirth: Date,
+    yearOfBirth: number,
+    thumbnail: string,
+    url: string,
+    nicknames: Nickname[],
+}
+
+export interface Nickname {
+    nick: string,
+    url: string,
+    modelId: number,
+}
