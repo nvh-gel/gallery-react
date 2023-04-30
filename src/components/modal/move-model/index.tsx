@@ -1,6 +1,9 @@
-import { DatePicker, Divider, Form, InputNumber, Modal, Select, SelectProps, Typography } from "antd";
+import { Button, DatePicker, Divider, Form, InputNumber, Modal, Select, SelectProps, Typography } from "antd";
+import { useForm } from "antd/es/form/Form";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
+import dayjs, { Dayjs } from 'dayjs';
+import { Dispatch, SetStateAction } from "react";
 import { Dictionary, ModelData, ModelTag } from "../../../interface/ModelData";
 import ImageBox from "../../image_box";
 
@@ -9,18 +12,23 @@ interface MovingProp {
     showMovingModal: boolean,
     modelData: ModelData | undefined,
     setShowMovingModal: (show: boolean) => void,
-    setEditData: (data: Dictionary<ModelData>) => void,
+    setEditData: Dispatch<SetStateAction<Dictionary<ModelData>>> | undefined,
 }
 
 export default function MovingModal(props: MovingProp) {
 
     const { showMovingModal, setShowMovingModal, setEditData, modelData } = props;
+    const [form] = useForm();
+    const defaultTags = modelData?.rel
+        .filter((tag) => !tag.isCategory && !tag.isPublisher)
+        .map((tag) => tag.name);
 
     function handleCancel(): void {
         setShowMovingModal(false);
     }
 
-    function handleOk(): void {
+    function handleSubmit(data: any): void {
+        console.log(data);
         setShowMovingModal(false);
     }
 
@@ -33,35 +41,45 @@ export default function MovingModal(props: MovingProp) {
         return [];
     }
 
-    const defaultTags = modelData?.rel
-        .filter((tag) => !tag.isCategory && !tag.isPublisher)
-        .map((tag) => tag.name);
+    function handleDatePick(value: Dayjs | null, dateString: string): void {
+        if (value && value !== null && dateString !== null) {
+            form.setFieldValue("yob", dayjs(dateString));
+        }
+    }
 
     return (
         <Modal
             centered={true}
             open={showMovingModal}
-            onCancel={handleCancel}
-            onOk={handleOk}
             width={800}
             key={modelData?.objectId}
+            footer={[
+                <Button key="cancel" onClick={handleCancel}>Cancel</Button>,
+                <Button form="moving-form" key="submit" htmlType="submit" type="primary">Move</Button>
+            ]}
+            onCancel={handleCancel}
         >
-            <Form className="form"
+            <Form form={form}
+                className="form"
                 layout="horizontal"
                 labelAlign="right"
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 18 }}
+                onFinish={handleSubmit}
             >
                 <Typography.Title level={3} editable>{modelData?.name}</Typography.Title>
                 <ImageBox images={modelData?.images} />
                 <Divider />
-                <FormItem label="Nicks">
-                    <Select mode="multiple"
-                        options={toSelectProp(modelData?.rel)}
-                        defaultValue={defaultTags} />
+                <FormItem label="Nicks" name="nicks" initialValue={defaultTags}>
+                    <Select mode="tags" options={toSelectProp(modelData?.rel)} allowClear />
                 </FormItem>
-                <FormItem label="Day of birth" name="dob">
-                    <DatePicker />
+                <FormItem label="Day of birth" style={{ marginBottom: 0 }}>
+                    <FormItem name="dob" style={{ display: 'inline-block' }}>
+                        <DatePicker onChange={handleDatePick} />
+                    </FormItem>
+                    <FormItem name="yob" style={{ display: 'inline-block' }}>
+                        <DatePicker picker="year" />
+                    </FormItem>
                 </FormItem>
                 <FormItem label="Sizes" style={{ marginBottom: 0 }}>
                     <FormItem name="boob" style={{ display: 'inline-block' }}>

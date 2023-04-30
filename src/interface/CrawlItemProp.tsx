@@ -9,6 +9,4 @@ export default interface CrawlItemProp {
     size?: number,
     editData?: Dictionary<ModelData>,
     setEditData?: Dispatch<SetStateAction<Dictionary<ModelData>>>,
-    setShowMovingModal?: Dispatch<SetStateAction<boolean>>,
-    setMovingItem?: Dispatch<SetStateAction<ModelData | undefined>>,
 };

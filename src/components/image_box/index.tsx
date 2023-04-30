@@ -4,21 +4,18 @@ import { useState } from "react";
 import "./image_box.css";
 
 export default function ImageBox(props: any) {
+
     const { images } = props;
     const [currentIndex, setCurrentIndex] = useState(0);
 
     function handlePreviousImg() {
-        setCurrentIndex(currentIndex > 0
-            ? currentIndex - 1
-            : currentIndex
-        );
+        const newIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;
+        setCurrentIndex(newIndex);
     }
 
     function handleNextImg() {
-        setCurrentIndex(currentIndex > images.length - 2
-            ? images.length - 1
-            : currentIndex + 1
-        );
+        const newIndex = currentIndex > images.length - 2 ? images.length - 1 : currentIndex + 1;
+        setCurrentIndex(newIndex);
     }
 
     return (
