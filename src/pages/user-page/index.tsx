@@ -1,13 +1,13 @@
 import { Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { Route, Routes } from "react-router-dom";
-import PageMenu from "../../components/menu/userMenu";
-import AboutPage from "../about";
-import AlbumPage from "../album";
-import ContactPage from "../contact";
-import HomePage from "../home";
-import LoginPage from "../login";
-import ModelPage from "../model";
+import PageMenu from "../../components/menu/user-menu";
+import AboutPage from "./about";
+import AlbumPage from "./album";
+import ContactPage from "./contact";
+import HomePage from "./home";
+import LoginPage from "./login";
+import ModelPage from "./model";
 
 export default function UserPage(props: any) {
 

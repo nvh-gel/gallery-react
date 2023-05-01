@@ -8,9 +8,9 @@ import axios from "axios";
 import dayjs, { Dayjs } from 'dayjs';
 import { Dispatch, SetStateAction, useState } from "react";
 import { Model, ModelData, ModelTag } from "../../../interface/ModelData";
-import { config } from "../../../utils/Request";
+import { config } from "../../../utils/Requests";
 import { Urls } from "../../../utils/Urls";
-import ImageBox from "../../image_box";
+import ImageBox from "../../image-box";
 
 interface MovingProp {
 

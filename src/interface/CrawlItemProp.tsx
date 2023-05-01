@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dictionary, ModelData } from "./ModelData";
 
-export default interface CrawlItemProp {
+export interface CrawlItemProp {
     item: ModelData,
-    setSpinning?: Dispatch<SetStateAction<boolean>>,
+    setSpinning: Dispatch<SetStateAction<boolean>>,
     loadData?: (page: number, size: number) => void,
     page?: number,
     size?: number,

@@ -1,7 +1,7 @@
 import { Col, Row, Space } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import LoginForm from "../../components/login/form";
+import LoginForm from "../../../components/form/login";
 
 function LoginPage(props: any) {
 

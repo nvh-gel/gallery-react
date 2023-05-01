@@ -2,28 +2,29 @@ import { DeleteOutlined, DownloadOutlined, LoginOutlined, SwapOutlined } from "@
 import { Button, Space, Tooltip, message } from "antd";
 import axios from "axios";
 import { useState } from "react";
-import CrawlItemProp from "../../interface/CrawlItemProp";
+import {CrawlItemProp} from "../../interface/CrawlItemProp";
 import { ModelData } from "../../interface/ModelData";
 import { Urls } from "../../utils/Urls";
+import LinkModel from "../modal/link-model";
 import MovingModal from "../modal/move-model";
 
 export default function Action(props: CrawlItemProp) {
 
     const { item, setSpinning, loadData, page, size, editData, setEditData } = props;
     const token = localStorage.getItem('token');
-    const spinning = setSpinning ? setSpinning : (spin: boolean) => { };
     const [showMovingModal, setShowMovingModal] = useState(false);
     const [movingItem, setMovingItem] = useState<ModelData>();
+    const [showLinkModal, setShowLinkModal] = useState(false);
 
     function handleSkip() {
-        spinning(true);
+        setSpinning(true);
         const url = Urls.BASE + Urls.CRAWL_MODEL + Urls.SKIP + '/' + item.objectId;
         axios.put(url, null, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).catch((e: Error) => {
-            spinning(false);
+            setSpinning(false);
             message.error(e.message);
         }).then((response) => {
             if (loadData && page && size) {
@@ -39,13 +40,13 @@ export default function Action(props: CrawlItemProp) {
     }
 
     function handleSave() {
-        spinning(true);
+        setSpinning(true);
         const saveData = retrieveData();
         const url = Urls.BASE + Urls.CRAWL_MODEL;
         axios.put(url, saveData, {
             headers: { Authorization: `Bearer ${token}` },
         }).catch((e: Error) => {
-            spinning(false);
+            setSpinning(false);
             message.error(e.message);
         }).then((response) => {
             if (loadData && page && size) {
@@ -65,6 +66,10 @@ export default function Action(props: CrawlItemProp) {
             setMovingItem(moveData);
             setShowMovingModal(true);
         }
+    }
+
+    function handleLink() {
+        setShowLinkModal(true);
     }
 
     return (
@@ -88,10 +93,18 @@ export default function Action(props: CrawlItemProp) {
                 size={size}
             />
             <Tooltip placement="right" title="Link">
-                <Button type="dashed" shape="circle">
+                <Button type="dashed" shape="circle" onClick={handleLink}>
                     <SwapOutlined />
                 </Button>
             </Tooltip>
+            <LinkModel showLinkModal={showLinkModal}
+                setShowLinkModel={setShowLinkModal}
+                objectId={item.objectId}
+                setSpinning={setSpinning}
+                loadData={loadData}
+                page={page}
+                size={size}
+            />
             <Tooltip placement="right" title="Skip">
                 <Button type="default" shape="circle" danger onClick={handleSkip}>
                     <DeleteOutlined />
