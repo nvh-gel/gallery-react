@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import LoginForm from "../form";
+import LoginForm from "../../form/login";
 
 export default function LoginModal(props: any) {
 

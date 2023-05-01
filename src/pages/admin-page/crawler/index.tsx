@@ -2,10 +2,10 @@ import { Carousel, Col, Divider, Image, List, Row, Space, Tag, Typography, messa
 import { PaginationConfig } from "antd/es/pagination";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import Action from "../../components/action";
-import RatingForm from "../../components/form/modelrating";
-import { Dictionary, ModelData } from "../../interface/ModelData";
-import { Urls } from "../../utils/Urls";
+import Action from "../../../components/action";
+import RatingForm from "../../../components/form/model-rating";
+import { Dictionary, ModelData } from "../../../interface/ModelData";
+import { Urls } from "../../../utils/Urls";
 import "./crawler.css";
 
 const { Link } = Typography;
@@ -113,6 +113,7 @@ function CrawlerPage(props: any) {
                                     item={item}
                                     editData={editData}
                                     setEditData={setEditData}
+                                    setSpinning={setSpinning}
                                 />
                             </Col>
                             <Col span={2}>

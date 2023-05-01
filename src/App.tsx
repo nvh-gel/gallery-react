@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
 import { ConfigProvider, Spin } from "antd";
+import React, { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
+import './App.css';
 import defineTheme from "./Theme";
 import User from "./interface/User";
-import UserPage from "./pages/userpage";
-import AdminPage from "./pages/adminpage";
-
+import AdminPage from "./pages/admin-page";
+import UserPage from "./pages/user-page";
 
 function App() {
 
@@ -40,7 +39,7 @@ function App() {
                 <Spin tip="loading"
                     spinning={spinning}
                     size="large"
-                    style={{position:'fixed',top:'30%', zIndex:1000}}
+                    style={{ position: 'fixed', top: '30%', zIndex: 1000 }}
                 >
                     {!isAdminPage()
                         ? <UserPage currentUser={currentUser}

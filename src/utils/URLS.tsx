@@ -6,4 +6,6 @@ export const Urls = {
     CRAWL_MODEL: '/crawl/model',
     MOVE: '/move',
     SKIP: '/skip',
+    SEARCH: '/search',
+    LINK: '/link',
 };

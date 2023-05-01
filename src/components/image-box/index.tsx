@@ -1,6 +1,6 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Image, Space } from "antd";
-import "./image_box.css";
+import "./image-box.css";
 
 export default function ImageBox(props: any) {
 
