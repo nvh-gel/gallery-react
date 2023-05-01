@@ -1,21 +1,23 @@
-import React from "react";
-import {Button, Form, Input} from "antd";
+import { Button, Form, Input, message } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
-import URL_CONFIG from "../../utils/URL_CONFIG";
 import axios from "axios";
-import User from "../../interface/User";
+import { Buffer } from "buffer";
+import User from "../../../interface/User";
+import { Urls } from "../../../utils/Urls";
 
 function LoginForm(props: any) {
 
-    const {setCurrentUser, setModalLoginOpen} = props;
+    const { setCurrentUser, setModalLoginOpen, setSpinning } = props;
 
     function attemptLogin(data: any) {
-        const url = URL_CONFIG.BASE + URL_CONFIG.AUTH + URL_CONFIG.LOGIN;
+        setSpinning(true);
+        const url = Urls.BASE + Urls.AUTH + Urls.LOGIN;
         axios.post(url, {
             username: data.username,
-            password: data.password
+            password: Buffer.from(data.password, 'binary').toString('base64')
         }).catch((ex: Error) => {
-            console.log(ex);
+            setSpinning(false);
+            message.error(ex.message);
         }).then((response) => {
             const data = response?.data.data;
             const user: User = {
@@ -25,36 +27,37 @@ function LoginForm(props: any) {
             setCurrentUser(user);
             localStorage.setItem('username', user.username);
             localStorage.setItem('token', user.token);
-            setModalLoginOpen(false);
+            if (setModalLoginOpen) { setModalLoginOpen(false); }
+            setSpinning(false);
         });
     }
 
     return (
         <Form name="login"
-              className="form"
-              labelCol={{span: 6}}
-              wrapperCol={{span: 14}}
-              initialValues={{remember: true}}
-              autoComplete="off"
-              onFinish={attemptLogin}
+            className="form"
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinish={attemptLogin}
         >
             <Form.Item
                 label="Username"
                 name="username">
-                <Input/>
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Password"
                 name="password">
-                <Input type="password"/>
+                <Input type="password" />
             </Form.Item>
             <Form.Item
                 name="remember"
                 valuePropName="checked"
-                wrapperCol={{offset: 6, span: 8}}>
+                wrapperCol={{ offset: 6, span: 8 }}>
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <Form.Item wrapperCol={{offset: 6, span: 14}}>
+            <Form.Item wrapperCol={{ offset: 6, span: 14 }}>
                 <Button type="primary" htmlType="submit">
                     Login
                 </Button>

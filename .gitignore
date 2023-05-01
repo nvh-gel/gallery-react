@@ -244,5 +244,7 @@ thumb
 sketch
 
 multi-color
+data.json
+routes.json
 
 # End of https://www.toptal.com/developers/gitignore/api/react,intellij+all,node

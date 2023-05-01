@@ -5,16 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faB, faCoffee, faGears, faS} from "@fortawesome/free-solid-svg-icons";
+import {BrowserRouter} from "react-router-dom";
 
 library.add(faB, faS, faGears, faCoffee);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

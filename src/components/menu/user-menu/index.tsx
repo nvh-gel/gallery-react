@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {Col, Menu, Row, Space} from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Col, Menu, Row, Space } from "antd";
+import { useEffect, useState } from "react";
+import { SyntheticEventData } from "react-dom/test-utils";
+import { NavLink, useLocation } from "react-router-dom";
+import LoginModal from "../../login/modal";
 import './menu.css';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {NavLink, useLocation} from "react-router-dom";
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
-import {SyntheticEventData} from "react-dom/test-utils";
-import LoginModal from "../loginModal";
 
 function PageMenu(props: any) {
 
     const location = useLocation().pathname;
     const [currentSelect, setCurrentSelect] = useState(location);
     const [modalLoginOpen, setModalLoginOpen] = useState(false);
-    const {currentUser, setCurrentUser} = props;
+    const { currentUser, setCurrentUser, setSpinning } = props;
 
     const menuColors = {
         "/": 'rgba(116,204,238,0.7)',
@@ -46,10 +46,10 @@ function PageMenu(props: any) {
     }, {
         key: '/login',
         icon: currentUser === null
-            ? <LockOutlined style={{fontSize: 24}}/>
-            : <UserOutlined style={{fontSize: 24}}/>,
+            ? <LockOutlined style={{ fontSize: 20 }} />
+            : <UserOutlined style={{ fontSize: 20 }} />,
         children: currentUser === null ? null : [{
-            label: 'Account',
+            label: currentUser.username,
             key: '/account',
         }, {
             label: 'Logout',
@@ -59,7 +59,7 @@ function PageMenu(props: any) {
 
     function defineMenuItemStyle(key: ObjectKey): {} {
         if (currentSelect === key) {
-            return {backgroundColor: menuColors[key]};
+            return { backgroundColor: menuColors[key] };
         }
         return {};
     }
@@ -88,7 +88,7 @@ function PageMenu(props: any) {
             <Col span={8}>
                 <NavLink to="/">
                     <Space direction="horizontal">
-                        <FontAwesomeIcon icon="gears" size="2xl"/>
+                        <FontAwesomeIcon icon="gears" size="2xl" />
                         <div className="logo">GALLERY</div>
                     </Space>
                 </NavLink>
@@ -106,6 +106,7 @@ function PageMenu(props: any) {
                 setCurrentUser={setCurrentUser}
                 modalLoginOpen={modalLoginOpen}
                 setModalLoginOpen={setModalLoginOpen}
+                setSpinning={setSpinning}
             />
         </Row>
     );
