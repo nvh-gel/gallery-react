@@ -9,6 +9,7 @@ processes = []
 
 [env]
   PORT = "8080"
+  REACT_APP_BASE_URL = "https://model-gallery-api.fly.dev"
 
 [[services]]
   internal_port = 8080
