@@ -23,10 +23,14 @@ function LoginForm(props: any) {
             const user: User = {
                 username: data.username,
                 token: data.token,
+                level: data.level,
+                defaultUrl: data.defaultUrl,
             }
             setCurrentUser(user);
             localStorage.setItem('username', user.username);
             localStorage.setItem('token', user.token);
+            localStorage.setItem('level', data.level.toString());
+            localStorage.setItem('defaultUrl', data.defaultUrl);
             if (setModalLoginOpen) { setModalLoginOpen(false); }
             setSpinning(false);
         });

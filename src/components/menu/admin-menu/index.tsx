@@ -19,7 +19,7 @@ function AdminMenu(props: any) {
             key: '/admin/transaction',
             label: <NavLink to="/admin/transaction">Transactions</NavLink>,
         }, {
-            key: '/login',
+            key: '/admin/login',
             icon: currentUser === null
                 ? <LockOutlined style={{ fontSize: 20 }} />
                 : <UserOutlined style={{ fontSize: 20 }} />,
@@ -38,7 +38,9 @@ function AdminMenu(props: any) {
             setCurrentUser(null);
             localStorage.removeItem('user');
             localStorage.removeItem('token');
-            navigate('/login');
+            localStorage.removeItem('level');
+            localStorage.removeItem('defaultUrl');
+            navigate('/admin/login');
         }
     }
 
