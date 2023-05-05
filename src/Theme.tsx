@@ -1,4 +1,4 @@
-import {theme} from "antd";
+import { theme } from "antd";
 
 const themeBlue = {
     token: {
@@ -27,8 +27,8 @@ const themeGreen = {
     }
 };
 
-const themeDark = {
-    algorithm: theme.defaultAlgorithm
+const themeDefault = {
+    algorithm: theme.defaultAlgorithm,
 };
 
 function defineTheme(pathname: string) {
@@ -46,7 +46,8 @@ function defineTheme(pathname: string) {
         case "/admin/crawler":
         case "/admin/user":
         case "/admin/transaction":
-            return themeDark;
+        case "/admin/model":
+            return themeDefault;
         default:
             return themeBlue;
     }
