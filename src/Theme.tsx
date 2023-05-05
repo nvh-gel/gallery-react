@@ -32,6 +32,9 @@ const themeDefault = {
 };
 
 function defineTheme(pathname: string) {
+    if (pathname.startsWith("/admin")) {
+        return themeDefault;
+    }
     switch (pathname) {
         case "/":
             return themeBlue;
@@ -43,13 +46,7 @@ function defineTheme(pathname: string) {
             return themeYellow;
         case "/contact":
             return themeGreen;
-        case "/admin/crawler":
-        case "/admin/user":
-        case "/admin/transaction":
-        case "/admin/model":
-            return themeDefault;
-        default:
-            return themeBlue;
+        default: return themeBlue;
     }
 }
 

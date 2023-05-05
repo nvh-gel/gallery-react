@@ -29,10 +29,6 @@ export function calculateAverage(numbers: number[]) {
     ) / 100;
 };
 
-export interface Dictionary<T> {
-    [id: string]: T
-};
-
 export interface Model {
     id?: number,
     objectId?: string,

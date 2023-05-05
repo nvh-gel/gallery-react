@@ -4,7 +4,8 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Action from "../../../components/action";
 import RatingForm from "../../../components/form/model-rating";
-import { Dictionary, ModelData } from "../../../interface/ModelData";
+import { ModelData } from "../../../interface/ModelData";
+import Dictionary from "../../../utils/Dictionary";
 import { Urls } from "../../../utils/Urls";
 import "./crawler.css";
 
