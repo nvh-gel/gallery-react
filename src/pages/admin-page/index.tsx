@@ -1,11 +1,11 @@
 import { Breadcrumb, Layout, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminMenu from "../../components/menu/admin-menu";
-import AdminSider from "../../components/menu/admin-sider";
 import "./admin-page.css";
 import CrawlerPage from "./crawler";
+import ModelManager from "./model";
+import UserManager from "./user";
 
 function AdminPage(props: any) {
 
@@ -19,7 +19,6 @@ function AdminPage(props: any) {
                 <AdminMenu currentUser={currentUser} setCurrentUser={setCurrentUser} />
             </Header>
             <Layout>
-                <AdminSider />
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }} items={
                         [{ title: "Home" }, { title: "Admin" }, { title: "Crawler" }]
@@ -34,6 +33,8 @@ function AdminPage(props: any) {
                     >
                         <Routes>
                             <Route key="crawler" path="/admin/crawler" element={<CrawlerPage setSpinning={setSpinning} />} />
+                            <Route key="user" path="/admin/user" element={<UserManager setSpinning={setSpinning} />} />
+                            <Route key="model" path="/admin/model" element={<ModelManager setSpinning={setSpinning} />} />
                         </Routes>
                     </Content>
                     <Footer style={{ textAlign: "center" }}>
