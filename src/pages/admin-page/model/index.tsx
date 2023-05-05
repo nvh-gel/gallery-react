@@ -1,11 +1,19 @@
 import { Typography } from "antd";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import { AdminPageProp } from "../../../interface/AdminPageProp";
+import { hasAccessTo } from "../../../interface/User";
 
-interface ModelManagerProp {
-    setSpinning: Dispatch<SetStateAction<boolean>>,
-}
+class ModelManager extends React.Component<AdminPageProp> {
 
-class ModelManager extends React.Component<ModelManagerProp> {
+    private pathName = "/admin/model";
+
+    constructor(props: AdminPageProp) {
+        super(props);
+        const currentUser = props.currentUser;
+        if (!hasAccessTo(currentUser, this.pathName)) {
+            props.navigate("/admin/unauthorized")
+        }
+    }
 
     render(): React.ReactNode {
         return (

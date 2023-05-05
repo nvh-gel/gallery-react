@@ -4,7 +4,7 @@ import { Col, Menu, Row, Space } from "antd";
 import { useEffect, useState } from "react";
 import { SyntheticEventData } from "react-dom/test-utils";
 import { NavLink, useLocation } from "react-router-dom";
-import LoginModal from "../../login/modal";
+import LoginModal from "../../modal/login";
 import './menu.css';
 
 function PageMenu(props: any) {
@@ -68,6 +68,8 @@ function PageMenu(props: any) {
         setCurrentUser(null);
         localStorage.removeItem('username');
         localStorage.removeItem('token');
+        localStorage.removeItem('level');
+        localStorage.removeItem('defaultUrl');
     }
 
     function handleClick(e: SyntheticEventData) {

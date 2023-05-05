@@ -4,20 +4,25 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Action from "../../../components/action";
 import RatingForm from "../../../components/form/model-rating";
-import { Dictionary, ModelData } from "../../../interface/ModelData";
+import { AdminPageProp } from "../../../interface/AdminPageProp";
+import { ModelData } from "../../../interface/ModelData";
+import { hasAccessTo } from "../../../interface/User";
+import Dictionary from "../../../utils/Dictionary";
+import { config } from "../../../utils/Requests";
 import { Urls } from "../../../utils/Urls";
 import "./crawler.css";
 
 const { Link } = Typography;
 
-function CrawlerPage(props: any) {
+function CrawlerPage(props: AdminPageProp) {
 
-    const { setSpinning } = props;
+    const { currentUser, setSpinning, navigate } = props;
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [size, setSize] = useState(10);
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
+    const pathName = "/admin/crawler";
 
     const paging: PaginationConfig = {
         onChange: handlePageChange,
@@ -28,30 +33,27 @@ function CrawlerPage(props: any) {
         showQuickJumper: false,
         showSizeChanger: false,
     }
-    const token = localStorage.getItem("token");
 
     const loadData = useCallback((page: number, size: number) => {
         setSpinning(true);
         const pagingParam = `/${page}/${size}`;
         const url = Urls.BASE + Urls.CRAWL_MODEL + pagingParam;
-        axios.get(url, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        }).catch((e: Error) => {
-            setSpinning(false);
-            message.error(e.message);
-        }).then((response) => {
-            const result = response?.data.data;
-            result.forEach((m: ModelData) => {
-                m.key = m.objectId
+        axios.get(url, config)
+            .catch((e: Error) => {
+                setSpinning(false);
+                message.error(e.message);
+            })
+            .then((response) => {
+                const result = response?.data.data;
+                result.forEach((m: ModelData) => {
+                    m.key = m.objectId
+                });
+                const total: number = response?.data.extra.total
+                setData(result);
+                setTotal(total);
+                setSpinning(false);
             });
-            const total: number = response?.data.extra.total
-            setData(result);
-            setTotal(total);
-            setSpinning(false);
-        });
-    }, [setSpinning, token])
+    }, [setSpinning])
 
     const meta = (item: ModelData) => {
         return (
@@ -94,8 +96,11 @@ function CrawlerPage(props: any) {
     }
 
     useEffect(() => {
+        if (!hasAccessTo(currentUser, pathName)) {
+            navigate("/admin/unauthorized");
+        }
         loadData(page, size);
-    }, [page, size, setSpinning, token, loadData])
+    }, [page, size, setSpinning, loadData, currentUser, navigate])
 
     return (
         <List

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { Dictionary, ModelData } from "./ModelData";
+import Dictionary from "../utils/Dictionary";
+import { ModelData } from "./ModelData";
 
 export interface CrawlItemProp {
     item: ModelData,
