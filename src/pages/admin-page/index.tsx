@@ -7,6 +7,7 @@ import CrawlerPage from "./crawler";
 import AdminHome from "./home";
 import AdminLogin from "./login";
 import ModelManager from "./model";
+import TransactionPage from "./transaction";
 import Unauthorized from "./unauthorized";
 import UserManager from "./user";
 
@@ -40,7 +41,12 @@ function AdminPage(props: any) {
                             <Routes>
                                 <Route key="crawler"
                                     path="/admin/crawler"
-                                    element={<CrawlerPage setSpinning={setSpinning} />} />
+                                    element={<CrawlerPage
+                                        currentUser={currentUser}
+                                        setSpinning={setSpinning}
+                                        navigate={navigate}
+                                    />}
+                                />
                                 <Route key="user"
                                     path="/admin/user"
                                     element={<UserManager
@@ -51,7 +57,20 @@ function AdminPage(props: any) {
                                 />
                                 <Route key="model"
                                     path="/admin/model"
-                                    element={<ModelManager setSpinning={setSpinning} />} />
+                                    element={<ModelManager
+                                        currentUser={currentUser}
+                                        setSpinning={setSpinning}
+                                        navigate={navigate}
+                                    />}
+                                />
+                                <Route key="transaction"
+                                    path="/admin/transaction"
+                                    element={<TransactionPage
+                                        currentUser={currentUser}
+                                        setSpinning={setSpinning}
+                                        navigate={navigate}
+                                    />}
+                                />
                                 <Route key="unauthorized"
                                     path="/admin/unauthorized"
                                     element={<Unauthorized />}
