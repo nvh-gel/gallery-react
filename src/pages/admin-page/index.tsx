@@ -40,6 +40,14 @@ function AdminPage(props: any) {
                         >
                             <Routes>
                                 <Route key="crawler"
+                                    path="/admin/crawler/:pageParam"
+                                    element={<CrawlerPage
+                                        currentUser={currentUser}
+                                        setSpinning={setSpinning}
+                                        navigate={navigate}
+                                    />}
+                                />
+                                <Route key="crawler"
                                     path="/admin/crawler"
                                     element={<CrawlerPage
                                         currentUser={currentUser}
@@ -97,7 +105,7 @@ function AdminPage(props: any) {
             setSpinning={setSpinning}
             setCurrentUser={setCurrentUser}
             target={location.pathname}
-        />
+        />;
 }
 
 export default AdminPage;

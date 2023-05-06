@@ -2,6 +2,7 @@ import { Carousel, Col, Divider, Image, List, Row, Space, Tag, Typography, messa
 import { PaginationConfig } from "antd/es/pagination";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Action from "../../../components/action";
 import RatingForm from "../../../components/form/model-rating";
 import { AdminPageProp } from "../../../interface/AdminPageProp";
@@ -17,15 +18,17 @@ const { Link } = Typography;
 function CrawlerPage(props: AdminPageProp) {
 
     const { currentUser, setSpinning, navigate } = props;
+    const { pageParam } = useParams();
+    const page = pageParam && pageParam !== null ? parseInt(pageParam) : 1;
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const [size, setSize] = useState(10);
+    const size = 20;
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
     const pathName = "/admin/crawler";
 
     const paging: PaginationConfig = {
         onChange: handlePageChange,
+        current: page,
         pageSize: size,
         total: total,
         responsive: true,
@@ -89,10 +92,8 @@ function CrawlerPage(props: AdminPageProp) {
     }
 
     function handlePageChange(pageNumber: number, pageSize: number) {
-        setSpinning(true);
         setData([]);
-        setPage(pageNumber);
-        setSize(pageSize);
+        navigate("/admin/crawler/" + pageNumber);
     }
 
     useEffect(() => {
