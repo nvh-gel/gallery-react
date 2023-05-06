@@ -3,7 +3,7 @@ export const Urls = {
     AUTH: '/auth',
     LOGIN: '/login',
     MODEL: '/model',
-    CRAWL_MODEL: '/crawl/model',
+    CRAWL: '/crawl',
     MOVE: '/move',
     SKIP: '/skip',
     SEARCH: '/search',
