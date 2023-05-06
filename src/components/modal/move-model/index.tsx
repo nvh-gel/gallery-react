@@ -42,7 +42,7 @@ export default function MovingModal(props: MovingProp) {
         setShowMovingModal(false);
         spinning(true);
         const moveData = prepareMoveData(data);
-        const url = Urls.BASE + Urls.CRAWL_MODEL + Urls.MOVE;
+        const url = Urls.BASE + Urls.CRAWL + Urls.MODEL + Urls.MOVE;
         axios.post(url, moveData, config)
             .catch((ex: Error) => {
                 message.error(ex.message);

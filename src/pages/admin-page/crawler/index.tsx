@@ -1,4 +1,5 @@
-import { Carousel, Col, Divider, Image, List, Row, Space, Tag, Typography, message } from "antd";
+import { SearchOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
+import { Button, Carousel, Col, Divider, Image, Input, List, Row, Space, Tag, Typography, message } from "antd";
 import { PaginationConfig } from "antd/es/pagination";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -19,12 +20,14 @@ function CrawlerPage(props: AdminPageProp) {
 
     const { currentUser, setSpinning, navigate } = props;
     const { pageParam } = useParams();
-    const page = pageParam && pageParam !== null ? parseInt(pageParam) : 1;
+    const currentPage = pageParam && pageParam !== null ? parseInt(pageParam) : 1;
+    const [page, setPage] = useState(currentPage);
     const [data, setData] = useState([]);
     const [total, setTotal] = useState(0);
-    const size = 20;
+    const size = 10;
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
     const pathName = "/admin/crawler";
+    const [showSearchBox, setShowSearchBox] = useState(false);
 
     const paging: PaginationConfig = {
         onChange: handlePageChange,
@@ -39,8 +42,7 @@ function CrawlerPage(props: AdminPageProp) {
 
     const loadData = useCallback((page: number, size: number) => {
         setSpinning(true);
-        const pagingParam = `/${page}/${size}`;
-        const url = Urls.BASE + Urls.CRAWL_MODEL + pagingParam;
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}/${page}/${size}`;
         axios.get(url, config)
             .catch((e: Error) => {
                 setSpinning(false);
@@ -91,8 +93,67 @@ function CrawlerPage(props: AdminPageProp) {
         );
     }
 
+    function handleToggleSearch() {
+        setShowSearchBox(!showSearchBox);
+    }
+
+    function handleTopModel() {
+        setSpinning(true);
+        setData([]);
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}/top/${size}`;
+        axios.get(url, config)
+            .catch((e: Error) => {
+                setSpinning(false);
+            })
+            .then((response) => {
+                const result = response?.data.data;
+                setData(result);
+                setTotal(size);
+                setSpinning(false);
+            })
+    }
+
+    function handleSearch(e: any) {
+        const searchStr: string = e.target.value;
+        setSpinning(true);
+        setData([]);
+        setPage(1);
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.SEARCH}/${page}/${size}?name=${searchStr}`;
+        axios.get(url, config)
+            .catch((e: Error) => {
+                setSpinning(false);
+            })
+            .then((response) => {
+                const result = response?.data.data;
+                setData(result);
+                setTotal(size);
+                setSpinning(false);
+            });
+    }
+
+    const header = (
+        <Row style={{ height: '1rem' }} justify="end" align="middle">
+            <Col></Col>
+            <Col>
+                <Space direction="horizontal">
+                    <Input
+                        style={{ borderRadius: '50px', display: showSearchBox ? 'block' : 'none' }}
+                        onInput={handleSearch}
+                    />
+                    <Button shape="circle" onClick={handleToggleSearch}>
+                        <SearchOutlined />
+                    </Button>
+                    <Button shape="circle" onClick={handleTopModel}>
+                        <VerticalAlignTopOutlined />
+                    </Button>
+                </Space>
+            </Col>
+        </Row>
+    );
+
     function handlePageChange(pageNumber: number, pageSize: number) {
         setData([]);
+        setPage(pageNumber);
         navigate("/admin/crawler/" + pageNumber);
     }
 
@@ -108,6 +169,7 @@ function CrawlerPage(props: AdminPageProp) {
             itemLayout="horizontal"
             dataSource={data}
             pagination={paging}
+            header={header}
             renderItem={(item: ModelData) => {
                 return (
                     <List.Item key={item.objectId}>
