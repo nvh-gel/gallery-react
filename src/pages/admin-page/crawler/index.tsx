@@ -28,6 +28,7 @@ function CrawlerPage(props: AdminPageProp) {
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
     const pathName = "/admin/crawler";
     const [showSearchBox, setShowSearchBox] = useState(false);
+    const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
     const paging: PaginationConfig = {
         onChange: handlePageChange,
@@ -114,21 +115,7 @@ function CrawlerPage(props: AdminPageProp) {
     }
 
     function handleSearch(e: any) {
-        const searchStr: string = e.target.value;
-        setSpinning(true);
-        setData([]);
-        setPage(1);
-        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.SEARCH}/${page}/${size}?name=${searchStr}`;
-        axios.get(url, config)
-            .catch((e: Error) => {
-                setSpinning(false);
-            })
-            .then((response) => {
-                const result = response?.data.data;
-                setData(result);
-                setTotal(size);
-                setSpinning(false);
-            });
+        setSearchValue(e.target.value);
     }
 
     const header = (
@@ -162,7 +149,29 @@ function CrawlerPage(props: AdminPageProp) {
             navigate("/admin/unauthorized");
         }
         loadData(page, size);
-    }, [page, size, setSpinning, loadData, currentUser, navigate])
+    }, [page, size, setSpinning, loadData, currentUser, navigate]);
+
+    useEffect(() => {
+        const timeOut = setTimeout(() => {
+            if (searchValue !== undefined) {
+                setSpinning(true);
+                setData([]);
+                setPage(1);
+                const url = `${Urls.BASE}${Urls.CRAWL}${Urls.SEARCH}/${page}/${size}?name=${searchValue}`;
+                axios.get(url, config)
+                    .catch((e: Error) => {
+                        setSpinning(false);
+                    })
+                    .then((response) => {
+                        const result = response?.data.data;
+                        setData(result);
+                        setTotal(size);
+                        setSpinning(false);
+                    });
+            }
+        }, 1000);
+        return () => clearTimeout(timeOut);
+    }, [searchValue, page, setSpinning]);
 
     return (
         <List
