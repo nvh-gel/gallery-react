@@ -1,5 +1,6 @@
 export const Urls = {
-    BASE: `${process.env.REACT_APP_BASE_URL}`,
+    BASE: process.env.REACT_APP_BASE_URL,
+    ROOT: process.env.REACT_APP_PUBLIC_URL,
     AUTH: '/auth',
     LOGIN: '/login',
     MODEL: '/model',
@@ -8,4 +9,9 @@ export const Urls = {
     SKIP: '/skip',
     SEARCH: '/search',
     LINK: '/link',
+    OAUTH2: '/oauth2',
+    AUTHORIZATION: '/authorization',
+    GOOGLE: '/google',
+    CALLBACK: '/callback',
+    USER: '/user',
 };
