@@ -26,7 +26,7 @@ function CrawlerPage(props: AdminPageProp) {
     const [total, setTotal] = useState(0);
     const size = 10;
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
-    const pathName = "/admin/crawler";
+    const pathName = "/admin/crawler"
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
@@ -42,7 +42,7 @@ function CrawlerPage(props: AdminPageProp) {
     }
 
     const loadData = useCallback((page: number, size: number) => {
-        setSpinning(true);
+        setSpinning(true)
         const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}/${page}/${size}`;
         axios.get(url, config)
             .catch((e: Error) => {
