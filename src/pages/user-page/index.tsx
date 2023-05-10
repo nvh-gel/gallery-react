@@ -8,6 +8,7 @@ import ContactPage from "./contact";
 import HomePage from "./home";
 import LoginPage from "./login";
 import ModelPage from "./model";
+import OAuth2CallBackPage from "./oauth";
 
 export default function UserPage(props: any) {
 
@@ -43,6 +44,9 @@ export default function UserPage(props: any) {
                             setCurrentUser={setCurrentUser}
                             setSpinning={setSpinning}
                         />}
+                    />
+                    <Route path="/oauth2/callback" key="oauth2"
+                        element={<OAuth2CallBackPage  setCurrentUser={setCurrentUser}/>}
                     />
                 </Routes>
             </Content>
