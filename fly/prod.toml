@@ -10,7 +10,8 @@ processes = []
 [env]
   ENV = "prod"
   PORT = "8080"
-  REACT_APP_BASE_URL = "https://model-gallery-api.fly.dev"
+  REACT_APP_BASE_URL = "https://model-gallery-api.onrender.com"
+  REACT_APP_PUBLIC_URL = "https://model-gallery.fly.dev"
 
 [[services]]
   internal_port = 8080

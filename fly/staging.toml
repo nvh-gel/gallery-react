@@ -11,6 +11,7 @@ processes = []
   ENV = "staging"
   PORT = "8080"
   REACT_APP_BASE_URL = "https://model-gallery-api-staging.onrender.com"
+  REACT_APP_PUBLIC_URL = "https://model-gallery-staging.fly.dev"
 
 [[services]]
   internal_port = 8080
