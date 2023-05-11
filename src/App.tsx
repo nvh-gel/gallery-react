@@ -20,10 +20,14 @@ function App() {
 
         const username = localStorage.getItem('username');
         const token = localStorage.getItem('token');
+        const level = localStorage.getItem('level');
+        const defaultUrl = localStorage.getItem('defaultUrl');
         if (username !== null && token !== null) {
             const loggedInUser: User = {
                 username: username,
                 token: token,
+                level: level === null ? 0 : parseInt(level),
+                defaultUrl: defaultUrl === null ? '/' : defaultUrl,
             }
             setCurrentUser(loggedInUser);
         }

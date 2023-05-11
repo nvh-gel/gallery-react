@@ -57,7 +57,7 @@ class LinkModel extends React.Component<LinkModelProp, LinkModelState> {
 
         this.props.setSpinning(true);
         if (!modelId || !objectId) { return; }
-        let url = `${Urls.BASE}${Urls.CRAWL_MODEL}${Urls.LINK}`;
+        let url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}${Urls.LINK}`;
         url += `?modelId=${modelId}&objectId=${objectId}`;
         axios.post(url, null, config)
             .catch((err: Error) => {

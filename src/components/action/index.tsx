@@ -18,7 +18,7 @@ export default function Action(props: CrawlItemProp) {
 
     function handleSkip() {
         setSpinning(true);
-        const url = Urls.BASE + Urls.CRAWL_MODEL + Urls.SKIP + '/' + item.objectId;
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}${Urls.SKIP}/${item.objectId}`;
         axios.put(url, null, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -42,7 +42,7 @@ export default function Action(props: CrawlItemProp) {
     function handleSave() {
         setSpinning(true);
         const saveData = retrieveData();
-        const url = Urls.BASE + Urls.CRAWL_MODEL;
+        const url = Urls.BASE + Urls.CRAWL + Urls.MODEL;
         axios.put(url, saveData, {
             headers: { Authorization: `Bearer ${token}` },
         }).catch((e: Error) => {

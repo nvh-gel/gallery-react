@@ -1,26 +1,38 @@
-import { Carousel, Col, Divider, Image, List, Row, Space, Tag, Typography, message } from "antd";
+import { SearchOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
+import { Button, Carousel, Col, Divider, Image, Input, List, Row, Space, Tag, Typography, message } from "antd";
 import { PaginationConfig } from "antd/es/pagination";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Action from "../../../components/action";
 import RatingForm from "../../../components/form/model-rating";
-import { Dictionary, ModelData } from "../../../interface/ModelData";
+import { AdminPageProp } from "../../../interface/AdminPageProp";
+import { ModelData } from "../../../interface/ModelData";
+import { hasAccessTo } from "../../../interface/User";
+import Dictionary from "../../../utils/Dictionary";
+import { config } from "../../../utils/Requests";
 import { Urls } from "../../../utils/Urls";
 import "./crawler.css";
 
 const { Link } = Typography;
 
-function CrawlerPage(props: any) {
+function CrawlerPage(props: AdminPageProp) {
 
-    const { setSpinning } = props;
+    const { currentUser, setSpinning, navigate } = props;
+    const { pageParam } = useParams();
+    const currentPage = pageParam && pageParam !== null ? parseInt(pageParam) : 1;
+    const [page, setPage] = useState(currentPage);
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const [size, setSize] = useState(10);
+    const size = 10;
     const [editData, setEditData] = useState<Dictionary<ModelData>>({});
+    const pathName = "/admin/crawler"
+    const [showSearchBox, setShowSearchBox] = useState(false);
+    const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
     const paging: PaginationConfig = {
         onChange: handlePageChange,
+        current: page,
         pageSize: size,
         total: total,
         responsive: true,
@@ -28,30 +40,26 @@ function CrawlerPage(props: any) {
         showQuickJumper: false,
         showSizeChanger: false,
     }
-    const token = localStorage.getItem("token");
 
     const loadData = useCallback((page: number, size: number) => {
-        setSpinning(true);
-        const pagingParam = `/${page}/${size}`;
-        const url = Urls.BASE + Urls.CRAWL_MODEL + pagingParam;
-        axios.get(url, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        }).catch((e: Error) => {
-            setSpinning(false);
-            message.error(e.message);
-        }).then((response) => {
-            const result = response?.data.data;
-            result.forEach((m: ModelData) => {
-                m.key = m.objectId
+        setSpinning(true)
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}/${page}/${size}`;
+        axios.get(url, config)
+            .catch((e: Error) => {
+                setSpinning(false);
+                message.error(e.message);
+            })
+            .then((response) => {
+                const result = response?.data.data;
+                result.forEach((m: ModelData) => {
+                    m.key = m.objectId
+                });
+                const total: number = response?.data.extra.total
+                setData(result);
+                setTotal(total);
+                setSpinning(false);
             });
-            const total: number = response?.data.extra.total
-            setData(result);
-            setTotal(total);
-            setSpinning(false);
-        });
-    }, [setSpinning, token])
+    }, [setSpinning])
 
     const meta = (item: ModelData) => {
         return (
@@ -86,22 +94,91 @@ function CrawlerPage(props: any) {
         );
     }
 
-    function handlePageChange(pageNumber: number, pageSize: number) {
+    function handleToggleSearch() {
+        setShowSearchBox(!showSearchBox);
+    }
+
+    function handleTopModel() {
         setSpinning(true);
         setData([]);
+        const url = `${Urls.BASE}${Urls.CRAWL}${Urls.MODEL}/top/${size}`;
+        axios.get(url, config)
+            .catch((e: Error) => {
+                setSpinning(false);
+            })
+            .then((response) => {
+                const result = response?.data.data;
+                setData(result);
+                setTotal(size);
+                setSpinning(false);
+            })
+    }
+
+    function handleSearch(e: any) {
+        setSearchValue(e.target.value);
+    }
+
+    const header = (
+        <Row style={{ height: '1rem' }} justify="end" align="middle">
+            <Col></Col>
+            <Col>
+                <Space direction="horizontal">
+                    <Input
+                        style={{ borderRadius: '50px', display: showSearchBox ? 'block' : 'none' }}
+                        onInput={handleSearch}
+                    />
+                    <Button shape="circle" onClick={handleToggleSearch}>
+                        <SearchOutlined />
+                    </Button>
+                    <Button shape="circle" onClick={handleTopModel}>
+                        <VerticalAlignTopOutlined />
+                    </Button>
+                </Space>
+            </Col>
+        </Row>
+    );
+
+    function handlePageChange(pageNumber: number, pageSize: number) {
+        setData([]);
         setPage(pageNumber);
-        setSize(pageSize);
+        navigate("/admin/crawler/" + pageNumber);
     }
 
     useEffect(() => {
+        if (!hasAccessTo(currentUser, pathName)) {
+            navigate("/admin/unauthorized");
+        }
         loadData(page, size);
-    }, [page, size, setSpinning, token, loadData])
+    }, [page, size, setSpinning, loadData, currentUser, navigate]);
+
+    useEffect(() => {
+        const timeOut = setTimeout(() => {
+            if (searchValue !== undefined) {
+                setSpinning(true);
+                setData([]);
+                setPage(1);
+                const url = `${Urls.BASE}${Urls.CRAWL}${Urls.SEARCH}/${page}/${size}?name=${searchValue}`;
+                axios.get(url, config)
+                    .catch((e: Error) => {
+                        setSpinning(false);
+                    })
+                    .then((response) => {
+                        const result = response?.data.data;
+                        setData(result);
+                        setTotal(size);
+                        setSpinning(false);
+                    });
+            }
+        }, 1000);
+        return () => clearTimeout(timeOut);
+    }, [searchValue, page, setSpinning]);
 
     return (
         <List
             itemLayout="horizontal"
             dataSource={data}
             pagination={paging}
+            header={header}
             renderItem={(item: ModelData) => {
                 return (
                     <List.Item key={item.objectId}>
